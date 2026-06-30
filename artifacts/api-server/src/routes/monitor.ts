@@ -12,9 +12,10 @@ function assessAlert(
   currentDirection: string,
   currentStrength: number
 ): { alert: string | null; alertLevel: "warning" | "danger" | null } {
-  const pnlPercent = direction === "BUY"
-    ? ((currentPrice - entryPrice) / entryPrice) * 100
-    : ((entryPrice - currentPrice) / entryPrice) * 100;
+  const pnlPercent =
+    direction === "BUY"
+      ? ((currentPrice - entryPrice) / entryPrice) * 100
+      : ((entryPrice - currentPrice) / entryPrice) * 100;
 
   const signalFlipped = currentDirection !== "NEUTRAL" && currentDirection !== direction;
 
@@ -34,7 +35,7 @@ function assessAlert(
 
   if (pnlPercent < -1.5 && currentStrength < 50) {
     return {
-      alert: `Your trade is down ${Math.abs(pnlPercent).toFixed(2)}% and the signal confidence has dropped to ${currentStrength}%. The market is moving against you — close now to cut losses.`,
+      alert: `Your trade is down ${Math.abs(pnlPercent).toFixed(2)}% and signal confidence has dropped to ${currentStrength}%. The market is moving against you — close now to cut losses.`,
       alertLevel: "danger",
     };
   }
@@ -56,7 +57,7 @@ function assessAlert(
   return { alert: null, alertLevel: null };
 }
 
-router.get("/monitor", (req, res) => {
+router.get("/monitor", async (req, res) => {
   const monitor = getActiveMonitor();
 
   if (!monitor) {
@@ -75,13 +76,15 @@ router.get("/monitor", (req, res) => {
     });
   }
 
-  const detail = computeSignalDetail(monitor.symbol);
-  const candles = getCachedCandles(monitor.symbol);
-  const currentPrice = candles.length > 0 ? candles[candles.length - 1].close : monitor.entryPrice;
+  const detail = await computeSignalDetail(monitor.symbol);
+  const candles = await getCachedCandles(monitor.symbol);
+  const currentPrice =
+    candles.length > 0 ? candles[candles.length - 1].close : monitor.entryPrice;
 
-  const pnlPercent = monitor.direction === "BUY"
-    ? ((currentPrice - monitor.entryPrice) / monitor.entryPrice) * 100
-    : ((monitor.entryPrice - currentPrice) / monitor.entryPrice) * 100;
+  const pnlPercent =
+    monitor.direction === "BUY"
+      ? ((currentPrice - monitor.entryPrice) / monitor.entryPrice) * 100
+      : ((monitor.entryPrice - currentPrice) / monitor.entryPrice) * 100;
 
   const currentStrength = detail?.strength ?? 50;
   const currentDirection = detail?.direction ?? "NEUTRAL";
@@ -109,7 +112,7 @@ router.get("/monitor", (req, res) => {
   });
 });
 
-router.post("/monitor", (req, res) => {
+router.post("/monitor", async (req, res) => {
   const { symbol, direction, entryPrice } = req.body;
 
   if (!symbol || !direction || entryPrice == null) {
@@ -128,26 +131,24 @@ router.post("/monitor", (req, res) => {
 
   setActiveMonitor(monitor);
 
-  const detail = computeSignalDetail(symbol);
-  const currentPrice = monitor.entryPrice;
-  const pnlPercent = 0;
+  const detail = await computeSignalDetail(symbol);
 
   return res.json({
     isActive: true,
     symbol: monitor.symbol,
     direction: monitor.direction,
     entryPrice: monitor.entryPrice,
-    currentPrice,
+    currentPrice: monitor.entryPrice,
     currentStrength: detail?.strength ?? 50,
     currentDirection: detail?.direction ?? "NEUTRAL",
-    pnlPercent,
+    pnlPercent: 0,
     alert: null,
     alertLevel: null,
     updatedAt: new Date().toISOString(),
   });
 });
 
-router.delete("/monitor", (req, res) => {
+router.delete("/monitor", (_req, res) => {
   clearActiveMonitor();
   return res.status(204).send();
 });

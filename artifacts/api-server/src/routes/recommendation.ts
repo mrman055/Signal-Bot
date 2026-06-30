@@ -15,7 +15,7 @@ function buildReasoning(
     .map((i) => i.description);
 
   const confidenceWord =
-    strength >= 85 ? "very high" : strength >= 75 ? "high" : "moderate";
+    strength >= 85 ? "Very high" : strength >= 75 ? "High" : "Moderate";
 
   const dirWord = direction === "BUY" ? "buy" : "sell";
 
@@ -24,11 +24,11 @@ function buildReasoning(
       ? topIndicators.join(". ")
       : `Multiple indicators align for a ${dirWord} on ${symbol}.`;
 
-  return `${confidenceWord.charAt(0).toUpperCase() + confidenceWord.slice(1)} confidence to ${dirWord} ${symbol}. ${reasons}.`;
+  return `${confidenceWord} confidence to ${dirWord} ${symbol}. ${reasons}.`;
 }
 
-router.get("/recommendation", (req, res) => {
-  const allSignals = getAllSignals();
+router.get("/recommendation", async (req, res) => {
+  const allSignals = await getAllSignals();
 
   const ranked = allSignals
     .filter((s) => s.direction !== "NEUTRAL")
@@ -39,7 +39,7 @@ router.get("/recommendation", (req, res) => {
   }
 
   const top = ranked[0];
-  const detail = computeSignalDetail(top.symbol);
+  const detail = await computeSignalDetail(top.symbol);
 
   const reasoning = detail
     ? buildReasoning(top.symbol, top.direction as "BUY" | "SELL", top.strength, detail.indicators)
@@ -58,6 +58,7 @@ router.get("/recommendation", (req, res) => {
     entryPrice: top.entryPrice,
     stopLoss: top.stopLoss,
     takeProfit: top.takeProfit,
+    isLive: top.isLive,
     updatedAt: top.updatedAt,
   });
 });
