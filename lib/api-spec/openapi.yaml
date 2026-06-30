@@ -3,13 +3,21 @@ info:
   # Do not change the title, if the title changes, the import paths will be broken
   title: Api
   version: 0.1.0
-  description: API specification
+  description: Trading Signal Bot API
 servers:
   - url: /api
     description: Base API path
 tags:
   - name: health
     description: Health operations
+  - name: signals
+    description: Trading signal operations
+  - name: pairs
+    description: Market pair operations
+  - name: watchlist
+    description: Watchlist operations
+  - name: analytics
+    description: Analytics and summary operations
 paths:
   /healthz:
     get:
@@ -24,6 +32,211 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HealthStatus"
+
+  /signals:
+    get:
+      operationId: listSignals
+      tags: [signals]
+      summary: Get all trading signals
+      description: Returns current trading signals for all tracked pairs
+      parameters:
+        - name: market
+          in: query
+          schema:
+            type: string
+            enum: [crypto, forex, commodity, all]
+          description: Filter by market type
+        - name: direction
+          in: query
+          schema:
+            type: string
+            enum: [BUY, SELL, NEUTRAL]
+          description: Filter by signal direction
+        - name: minStrength
+          in: query
+          schema:
+            type: number
+          description: Minimum signal strength (0-100)
+      responses:
+        "200":
+          description: List of trading signals
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Signal"
+
+  /signals/{symbol}:
+    get:
+      operationId: getSignalBySymbol
+      tags: [signals]
+      summary: Get signal for a specific symbol
+      parameters:
+        - name: symbol
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Signal detail with indicator breakdown
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SignalDetail"
+        "404":
+          description: Symbol not found
+
+  /signals/{symbol}/refresh:
+    post:
+      operationId: refreshSignal
+      tags: [signals]
+      summary: Force refresh signal analysis for a symbol
+      parameters:
+        - name: symbol
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Refreshed signal
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SignalDetail"
+
+  /pairs:
+    get:
+      operationId: getPairs
+      tags: [pairs]
+      summary: Get all tracked trading pairs
+      responses:
+        "200":
+          description: List of all pairs
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Pair"
+
+  /pairs/{symbol}/candles:
+    get:
+      operationId: fetchCandles
+      tags: [pairs]
+      summary: Get OHLCV candlestick data for a pair
+      parameters:
+        - name: symbol
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OHLCV candle data
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Candle"
+
+  /watchlist:
+    get:
+      operationId: getWatchlist
+      tags: [watchlist]
+      summary: Get user watchlist
+      responses:
+        "200":
+          description: Watchlist items
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/WatchlistItem"
+    post:
+      operationId: addToWatchlist
+      tags: [watchlist]
+      summary: Add a symbol to watchlist
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/WatchlistInput"
+      responses:
+        "201":
+          description: Added to watchlist
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/WatchlistItem"
+
+  /watchlist/{id}:
+    delete:
+      operationId: removeFromWatchlist
+      tags: [watchlist]
+      summary: Remove a symbol from watchlist
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Removed successfully
+
+  /analytics/summary:
+    get:
+      operationId: getAnalyticsSummary
+      tags: [analytics]
+      summary: Get overall market analytics summary
+      responses:
+        "200":
+          description: Summary of all signals
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AnalyticsSummary"
+
+  /analytics/top-signals:
+    get:
+      operationId: listTopSignals
+      tags: [analytics]
+      summary: Get top highest-confidence signals
+      parameters:
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 5
+      responses:
+        "200":
+          description: Top signals by confidence
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Signal"
+
+  /analytics/market-overview:
+    get:
+      operationId: getMarketOverview
+      tags: [analytics]
+      summary: Market overview by category
+      responses:
+        "200":
+          description: Market overview grouped by type
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MarketOverview"
+
 components:
   schemas:
     HealthStatus:
@@ -34,3 +247,260 @@ components:
       required:
         - status
 
+    Signal:
+      type: object
+      required:
+        - symbol
+        - market
+        - direction
+        - strength
+        - price
+        - change24h
+        - changePercent24h
+        - updatedAt
+      properties:
+        symbol:
+          type: string
+          description: Trading pair symbol e.g. BTC/USDT
+        market:
+          type: string
+          enum: [crypto, forex, commodity]
+        direction:
+          type: string
+          enum: [BUY, SELL, NEUTRAL]
+        strength:
+          type: number
+          description: Signal strength 0-100
+        price:
+          type: number
+        change24h:
+          type: number
+        changePercent24h:
+          type: number
+        volume24h:
+          type: ["number", "null"]
+        entryPrice:
+          type: ["number", "null"]
+        stopLoss:
+          type: ["number", "null"]
+        takeProfit:
+          type: ["number", "null"]
+        timeframe:
+          type: string
+        updatedAt:
+          type: string
+
+    SignalDetail:
+      type: object
+      required:
+        - symbol
+        - market
+        - direction
+        - strength
+        - price
+        - change24h
+        - changePercent24h
+        - updatedAt
+        - indicators
+      properties:
+        symbol:
+          type: string
+        market:
+          type: string
+          enum: [crypto, forex, commodity]
+        direction:
+          type: string
+          enum: [BUY, SELL, NEUTRAL]
+        strength:
+          type: number
+        price:
+          type: number
+        change24h:
+          type: number
+        changePercent24h:
+          type: number
+        volume24h:
+          type: ["number", "null"]
+        entryPrice:
+          type: ["number", "null"]
+        stopLoss:
+          type: ["number", "null"]
+        takeProfit:
+          type: ["number", "null"]
+        timeframe:
+          type: string
+        updatedAt:
+          type: string
+        indicators:
+          type: array
+          items:
+            $ref: "#/components/schemas/Indicator"
+        candles:
+          type: array
+          items:
+            $ref: "#/components/schemas/Candle"
+
+    Indicator:
+      type: object
+      required:
+        - name
+        - value
+        - signal
+        - weight
+      properties:
+        name:
+          type: string
+          description: Indicator name (RSI, MACD, EMA, etc.)
+        value:
+          type: number
+        signal:
+          type: string
+          enum: [BUY, SELL, NEUTRAL]
+        weight:
+          type: number
+          description: Weight in signal calculation 0-1
+        description:
+          type: string
+
+    Candle:
+      type: object
+      required:
+        - time
+        - open
+        - high
+        - low
+        - close
+        - volume
+      properties:
+        time:
+          type: integer
+          description: Unix timestamp in seconds
+        open:
+          type: number
+        high:
+          type: number
+        low:
+          type: number
+        close:
+          type: number
+        volume:
+          type: number
+
+    Pair:
+      type: object
+      required:
+        - symbol
+        - market
+        - baseAsset
+        - quoteAsset
+        - isActive
+      properties:
+        symbol:
+          type: string
+        market:
+          type: string
+          enum: [crypto, forex, commodity]
+        baseAsset:
+          type: string
+        quoteAsset:
+          type: string
+        isActive:
+          type: boolean
+
+    WatchlistItem:
+      type: object
+      required:
+        - id
+        - symbol
+        - market
+        - addedAt
+      properties:
+        id:
+          type: integer
+        symbol:
+          type: string
+        market:
+          type: string
+          enum: [crypto, forex, commodity]
+        addedAt:
+          type: string
+        notes:
+          type: ["string", "null"]
+
+    WatchlistInput:
+      type: object
+      required:
+        - symbol
+        - market
+      properties:
+        symbol:
+          type: string
+        market:
+          type: string
+          enum: [crypto, forex, commodity]
+        notes:
+          type: string
+
+    AnalyticsSummary:
+      type: object
+      required:
+        - totalPairs
+        - buySignals
+        - sellSignals
+        - neutralSignals
+        - avgStrength
+        - highConfidenceCount
+        - lastUpdated
+      properties:
+        totalPairs:
+          type: integer
+        buySignals:
+          type: integer
+        sellSignals:
+          type: integer
+        neutralSignals:
+          type: integer
+        avgStrength:
+          type: number
+        highConfidenceCount:
+          type: integer
+          description: Signals with strength >= 80
+        lastUpdated:
+          type: string
+
+    MarketOverview:
+      type: object
+      required:
+        - crypto
+        - forex
+        - commodity
+      properties:
+        crypto:
+          $ref: "#/components/schemas/MarketStats"
+        forex:
+          $ref: "#/components/schemas/MarketStats"
+        commodity:
+          $ref: "#/components/schemas/MarketStats"
+
+    MarketStats:
+      type: object
+      required:
+        - total
+        - buy
+        - sell
+        - neutral
+        - avgStrength
+        - topSignal
+      properties:
+        total:
+          type: integer
+        buy:
+          type: integer
+        sell:
+          type: integer
+        neutral:
+          type: integer
+        avgStrength:
+          type: number
+        topSignal:
+          type: ["string", "null"]
