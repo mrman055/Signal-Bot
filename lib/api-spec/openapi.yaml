@@ -3,20 +3,27 @@ info:
   # Do not change the title, if the title changes, the import paths will be broken
   title: Api
   version: 0.1.0
-  description: API specification
+  description: Trading Signal Bot API
 servers:
   - url: /api
     description: Base API path
 tags:
   - name: health
     description: Health operations
+  - name: signals
+    description: Trading signal operations
+  - name: pairs
+    description: Market pair operations
+  - name: monitor
+    description: Active trade monitoring
+  - name: watchlist
+    description: Watchlist operations
 paths:
   /healthz:
     get:
       operationId: healthCheck
       tags: [health]
       summary: Health check
-      description: Returns server health status
       responses:
         "200":
           description: Healthy
@@ -24,13 +31,407 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HealthStatus"
+
+  /recommendation:
+    get:
+      operationId: getRecommendation
+      tags: [signals]
+      summary: Get the single best trade to make right now
+      description: Returns the highest-confidence trade signal across all markets
+      responses:
+        "200":
+          description: Top recommended trade
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Recommendation"
+
+  /signals:
+    get:
+      operationId: listSignals
+      tags: [signals]
+      summary: Get all trading signals
+      parameters:
+        - name: market
+          in: query
+          schema:
+            type: string
+            enum: [crypto, forex, commodity, all]
+        - name: direction
+          in: query
+          schema:
+            type: string
+            enum: [BUY, SELL, NEUTRAL]
+      responses:
+        "200":
+          description: List of trading signals
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Signal"
+
+  /signals/{symbol}:
+    get:
+      operationId: getSignalBySymbol
+      tags: [signals]
+      summary: Get signal for a specific symbol
+      parameters:
+        - name: symbol
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Signal detail
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SignalDetail"
+        "404":
+          description: Symbol not found
+
+  /monitor:
+    get:
+      operationId: getMonitor
+      tags: [monitor]
+      summary: Get the current active trade monitoring status
+      description: Returns the trade being monitored and whether to close it now
+      responses:
+        "200":
+          description: Monitoring status
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MonitorStatus"
+    post:
+      operationId: startMonitor
+      tags: [monitor]
+      summary: Start monitoring a trade
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/MonitorInput"
+      responses:
+        "200":
+          description: Monitoring started
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MonitorStatus"
+    delete:
+      operationId: stopMonitor
+      tags: [monitor]
+      summary: Stop monitoring (trade closed)
+      responses:
+        "204":
+          description: Monitoring stopped
+
+  /pairs:
+    get:
+      operationId: getPairs
+      tags: [pairs]
+      summary: Get all tracked trading pairs
+      responses:
+        "200":
+          description: List of all pairs
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Pair"
+
+  /watchlist:
+    get:
+      operationId: getWatchlist
+      tags: [watchlist]
+      summary: Get the user's watchlist
+      responses:
+        "200":
+          description: Watchlist items
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/WatchlistItem"
+    post:
+      operationId: addToWatchlist
+      tags: [watchlist]
+      summary: Add a symbol to the watchlist
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/WatchlistInput"
+      responses:
+        "201":
+          description: Item added
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/WatchlistItem"
+
+  /watchlist/{id}:
+    delete:
+      operationId: removeFromWatchlist
+      tags: [watchlist]
+      summary: Remove a symbol from the watchlist
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Item removed
+
 components:
   schemas:
     HealthStatus:
       type: object
+      required: [status]
       properties:
         status:
           type: string
-      required:
-        - status
 
+    Recommendation:
+      type: object
+      required:
+        - symbol
+        - market
+        - direction
+        - strength
+        - price
+        - change24h
+        - changePercent24h
+        - timeframe
+        - reasoning
+        - updatedAt
+      properties:
+        symbol:
+          type: string
+        market:
+          type: string
+          enum: [crypto, forex, commodity]
+        direction:
+          type: string
+          enum: [BUY, SELL]
+        strength:
+          type: number
+          description: Confidence 0-100
+        price:
+          type: number
+        change24h:
+          type: number
+        changePercent24h:
+          type: number
+        timeframe:
+          type: string
+        reasoning:
+          type: string
+          description: Plain English explanation of why to trade this
+        entryPrice:
+          type: ["number", "null"]
+        stopLoss:
+          type: ["number", "null"]
+        takeProfit:
+          type: ["number", "null"]
+        updatedAt:
+          type: string
+
+    Signal:
+      type: object
+      required:
+        - symbol
+        - market
+        - direction
+        - strength
+        - price
+        - change24h
+        - changePercent24h
+        - timeframe
+        - updatedAt
+      properties:
+        symbol:
+          type: string
+        market:
+          type: string
+          enum: [crypto, forex, commodity]
+        direction:
+          type: string
+          enum: [BUY, SELL, NEUTRAL]
+        strength:
+          type: number
+        price:
+          type: number
+        change24h:
+          type: number
+        changePercent24h:
+          type: number
+        timeframe:
+          type: string
+        entryPrice:
+          type: ["number", "null"]
+        stopLoss:
+          type: ["number", "null"]
+        takeProfit:
+          type: ["number", "null"]
+        updatedAt:
+          type: string
+
+    SignalDetail:
+      type: object
+      required:
+        - symbol
+        - market
+        - direction
+        - strength
+        - price
+        - change24h
+        - changePercent24h
+        - timeframe
+        - updatedAt
+        - indicators
+      properties:
+        symbol:
+          type: string
+        market:
+          type: string
+          enum: [crypto, forex, commodity]
+        direction:
+          type: string
+          enum: [BUY, SELL, NEUTRAL]
+        strength:
+          type: number
+        price:
+          type: number
+        change24h:
+          type: number
+        changePercent24h:
+          type: number
+        timeframe:
+          type: string
+        entryPrice:
+          type: ["number", "null"]
+        stopLoss:
+          type: ["number", "null"]
+        takeProfit:
+          type: ["number", "null"]
+        updatedAt:
+          type: string
+        indicators:
+          type: array
+          items:
+            $ref: "#/components/schemas/Indicator"
+
+    Indicator:
+      type: object
+      required: [name, value, signal, weight, description]
+      properties:
+        name:
+          type: string
+        value:
+          type: number
+        signal:
+          type: string
+          enum: [BUY, SELL, NEUTRAL]
+        weight:
+          type: number
+        description:
+          type: string
+
+    MonitorInput:
+      type: object
+      required: [symbol, direction, entryPrice]
+      properties:
+        symbol:
+          type: string
+        direction:
+          type: string
+          enum: [BUY, SELL]
+        entryPrice:
+          type: number
+
+    MonitorStatus:
+      type: object
+      required:
+        - isActive
+        - updatedAt
+      properties:
+        isActive:
+          type: boolean
+        symbol:
+          type: ["string", "null"]
+        direction:
+          type: ["string", "null"]
+        entryPrice:
+          type: ["number", "null"]
+        currentPrice:
+          type: ["number", "null"]
+        currentStrength:
+          type: ["number", "null"]
+        currentDirection:
+          type: ["string", "null"]
+        pnlPercent:
+          type: ["number", "null"]
+          description: Unrealised P&L as a percentage
+        alert:
+          type: ["string", "null"]
+          description: Non-null when you should close the trade now
+        alertLevel:
+          type: ["string", "null"]
+          enum: [warning, danger, null]
+        updatedAt:
+          type: string
+
+    Pair:
+      type: object
+      required: [symbol, market, baseAsset, quoteAsset, isActive]
+      properties:
+        symbol:
+          type: string
+        market:
+          type: string
+          enum: [crypto, forex, commodity]
+        baseAsset:
+          type: string
+        quoteAsset:
+          type: string
+        isActive:
+          type: boolean
+
+    WatchlistItem:
+      type: object
+      required: [id, symbol, market, addedAt]
+      properties:
+        id:
+          type: integer
+        symbol:
+          type: string
+        market:
+          type: string
+          enum: [crypto, forex, commodity]
+        addedAt:
+          type: string
+        notes:
+          type: ["string", "null"]
+
+    WatchlistInput:
+      type: object
+      required: [symbol, market]
+      properties:
+        symbol:
+          type: string
+        market:
+          type: string
+          enum: [crypto, forex, commodity]
+        notes:
+          type: ["string", "null"]
