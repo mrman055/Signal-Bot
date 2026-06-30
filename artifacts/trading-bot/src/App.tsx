@@ -6,8 +6,8 @@ import NotFound from "@/pages/not-found";
 import { Shell } from "@/components/layout/shell";
 
 import Dashboard from "@/pages/dashboard";
+import Signals from "@/pages/signals";
 import SignalDetail from "@/pages/signal-detail";
-import Watchlist from "@/pages/watchlist";
 
 const queryClient = new QueryClient();
 
@@ -16,8 +16,8 @@ function Router() {
     <Shell>
       <Switch>
         <Route path="/" component={Dashboard} />
+        <Route path="/signals" component={Signals} />
         <Route path="/signals/:symbol" component={SignalDetail} />
-        <Route path="/watchlist" component={Watchlist} />
         <Route component={NotFound} />
       </Switch>
     </Shell>

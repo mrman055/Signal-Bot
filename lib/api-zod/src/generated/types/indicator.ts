@@ -8,11 +8,9 @@
 import type { IndicatorSignal } from './indicatorSignal';
 
 export interface Indicator {
-  /** Indicator name (RSI, MACD, EMA, etc.) */
   name: string;
   value: number;
   signal: IndicatorSignal;
-  /** Weight in signal calculation 0-1 */
   weight: number;
-  description?: string;
+  description: string;
 }

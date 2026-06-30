@@ -9,7 +9,6 @@ import * as zod from 'zod';
 
 
 /**
- * Returns server health status
  * @summary Health check
  */
 export const HealthCheckResponse = zod.object({
@@ -18,28 +17,46 @@ export const HealthCheckResponse = zod.object({
 
 
 /**
- * Returns current trading signals for all tracked pairs
- * @summary Get all trading signals
+ * Returns the highest-confidence trade signal across all markets
+ * @summary Get the single best trade to make right now
  */
-export const ListSignalsQueryParams = zod.object({
-  "market": zod.enum(['crypto', 'forex', 'commodity', 'all']).optional().describe('Filter by market type'),
-  "direction": zod.enum(['BUY', 'SELL', 'NEUTRAL']).optional().describe('Filter by signal direction'),
-  "minStrength": zod.coerce.number().optional().describe('Minimum signal strength (0-100)')
-})
-
-export const ListSignalsResponseItem = zod.object({
-  "symbol": zod.string().describe('Trading pair symbol e.g. BTC\/USDT'),
+export const GetRecommendationResponse = zod.object({
+  "symbol": zod.string(),
   "market": zod.enum(['crypto', 'forex', 'commodity']),
-  "direction": zod.enum(['BUY', 'SELL', 'NEUTRAL']),
-  "strength": zod.number().describe('Signal strength 0-100'),
+  "direction": zod.enum(['BUY', 'SELL']),
+  "strength": zod.number().describe('Confidence 0-100'),
   "price": zod.number(),
   "change24h": zod.number(),
   "changePercent24h": zod.number(),
-  "volume24h": zod.number().nullish(),
+  "timeframe": zod.string(),
+  "reasoning": zod.string().describe('Plain English explanation of why to trade this'),
   "entryPrice": zod.number().nullish(),
   "stopLoss": zod.number().nullish(),
   "takeProfit": zod.number().nullish(),
-  "timeframe": zod.string().optional(),
+  "updatedAt": zod.string()
+})
+
+
+/**
+ * @summary Get all trading signals
+ */
+export const ListSignalsQueryParams = zod.object({
+  "market": zod.enum(['crypto', 'forex', 'commodity', 'all']).optional(),
+  "direction": zod.enum(['BUY', 'SELL', 'NEUTRAL']).optional()
+})
+
+export const ListSignalsResponseItem = zod.object({
+  "symbol": zod.string(),
+  "market": zod.enum(['crypto', 'forex', 'commodity']),
+  "direction": zod.enum(['BUY', 'SELL', 'NEUTRAL']),
+  "strength": zod.number(),
+  "price": zod.number(),
+  "change24h": zod.number(),
+  "changePercent24h": zod.number(),
+  "timeframe": zod.string(),
+  "entryPrice": zod.number().nullish(),
+  "stopLoss": zod.number().nullish(),
+  "takeProfit": zod.number().nullish(),
   "updatedAt": zod.string()
 })
 export const ListSignalsResponse = zod.array(ListSignalsResponseItem)
@@ -60,67 +77,68 @@ export const GetSignalBySymbolResponse = zod.object({
   "price": zod.number(),
   "change24h": zod.number(),
   "changePercent24h": zod.number(),
-  "volume24h": zod.number().nullish(),
+  "timeframe": zod.string(),
   "entryPrice": zod.number().nullish(),
   "stopLoss": zod.number().nullish(),
   "takeProfit": zod.number().nullish(),
-  "timeframe": zod.string().optional(),
   "updatedAt": zod.string(),
   "indicators": zod.array(zod.object({
-  "name": zod.string().describe('Indicator name (RSI, MACD, EMA, etc.)'),
+  "name": zod.string(),
   "value": zod.number(),
   "signal": zod.enum(['BUY', 'SELL', 'NEUTRAL']),
-  "weight": zod.number().describe('Weight in signal calculation 0-1'),
-  "description": zod.string().optional()
-})),
-  "candles": zod.array(zod.object({
-  "time": zod.number().describe('Unix timestamp in seconds'),
-  "open": zod.number(),
-  "high": zod.number(),
-  "low": zod.number(),
-  "close": zod.number(),
-  "volume": zod.number()
-})).optional()
+  "weight": zod.number(),
+  "description": zod.string()
+}))
 })
 
 
 /**
- * @summary Force refresh signal analysis for a symbol
+ * Returns the trade being monitored and whether to close it now
+ * @summary Get the current active trade monitoring status
  */
-export const RefreshSignalParams = zod.object({
-  "symbol": zod.coerce.string()
+export const GetMonitorResponse = zod.object({
+  "isActive": zod.boolean(),
+  "symbol": zod.string().nullish(),
+  "direction": zod.string().nullish(),
+  "entryPrice": zod.number().nullish(),
+  "currentPrice": zod.number().nullish(),
+  "currentStrength": zod.number().nullish(),
+  "currentDirection": zod.string().nullish(),
+  "pnlPercent": zod.number().nullish().describe('Unrealised P&L as a percentage'),
+  "alert": zod.string().nullish().describe('Non-null when you should close the trade now — plain English reason'),
+  "alertLevel": zod.union([zod.literal('warning'),zod.literal('danger'),zod.literal(null)]).nullish(),
+  "updatedAt": zod.string()
 })
 
-export const RefreshSignalResponse = zod.object({
+
+/**
+ * @summary Start monitoring a trade
+ */
+export const StartMonitorBody = zod.object({
   "symbol": zod.string(),
-  "market": zod.enum(['crypto', 'forex', 'commodity']),
-  "direction": zod.enum(['BUY', 'SELL', 'NEUTRAL']),
-  "strength": zod.number(),
-  "price": zod.number(),
-  "change24h": zod.number(),
-  "changePercent24h": zod.number(),
-  "volume24h": zod.number().nullish(),
-  "entryPrice": zod.number().nullish(),
-  "stopLoss": zod.number().nullish(),
-  "takeProfit": zod.number().nullish(),
-  "timeframe": zod.string().optional(),
-  "updatedAt": zod.string(),
-  "indicators": zod.array(zod.object({
-  "name": zod.string().describe('Indicator name (RSI, MACD, EMA, etc.)'),
-  "value": zod.number(),
-  "signal": zod.enum(['BUY', 'SELL', 'NEUTRAL']),
-  "weight": zod.number().describe('Weight in signal calculation 0-1'),
-  "description": zod.string().optional()
-})),
-  "candles": zod.array(zod.object({
-  "time": zod.number().describe('Unix timestamp in seconds'),
-  "open": zod.number(),
-  "high": zod.number(),
-  "low": zod.number(),
-  "close": zod.number(),
-  "volume": zod.number()
-})).optional()
+  "direction": zod.enum(['BUY', 'SELL']),
+  "entryPrice": zod.number()
 })
+
+export const StartMonitorResponse = zod.object({
+  "isActive": zod.boolean(),
+  "symbol": zod.string().nullish(),
+  "direction": zod.string().nullish(),
+  "entryPrice": zod.number().nullish(),
+  "currentPrice": zod.number().nullish(),
+  "currentStrength": zod.number().nullish(),
+  "currentDirection": zod.string().nullish(),
+  "pnlPercent": zod.number().nullish().describe('Unrealised P&L as a percentage'),
+  "alert": zod.string().nullish().describe('Non-null when you should close the trade now — plain English reason'),
+  "alertLevel": zod.union([zod.literal('warning'),zod.literal('danger'),zod.literal(null)]).nullish(),
+  "updatedAt": zod.string()
+})
+
+
+/**
+ * @summary Stop monitoring (trade closed)
+ */
+export const StopMonitorResponse = zod.void()
 
 
 /**
@@ -134,136 +152,5 @@ export const GetPairsResponseItem = zod.object({
   "isActive": zod.boolean()
 })
 export const GetPairsResponse = zod.array(GetPairsResponseItem)
-
-
-/**
- * @summary Get OHLCV candlestick data for a pair
- */
-export const FetchCandlesParams = zod.object({
-  "symbol": zod.coerce.string()
-})
-
-export const FetchCandlesResponseItem = zod.object({
-  "time": zod.number().describe('Unix timestamp in seconds'),
-  "open": zod.number(),
-  "high": zod.number(),
-  "low": zod.number(),
-  "close": zod.number(),
-  "volume": zod.number()
-})
-export const FetchCandlesResponse = zod.array(FetchCandlesResponseItem)
-
-
-/**
- * @summary Get user watchlist
- */
-export const GetWatchlistResponseItem = zod.object({
-  "id": zod.number(),
-  "symbol": zod.string(),
-  "market": zod.enum(['crypto', 'forex', 'commodity']),
-  "addedAt": zod.string(),
-  "notes": zod.string().nullish()
-})
-export const GetWatchlistResponse = zod.array(GetWatchlistResponseItem)
-
-
-/**
- * @summary Add a symbol to watchlist
- */
-export const AddToWatchlistBody = zod.object({
-  "symbol": zod.string(),
-  "market": zod.enum(['crypto', 'forex', 'commodity']),
-  "notes": zod.string().optional()
-})
-
-export const AddToWatchlistResponse = zod.object({
-  "id": zod.number(),
-  "symbol": zod.string(),
-  "market": zod.enum(['crypto', 'forex', 'commodity']),
-  "addedAt": zod.string(),
-  "notes": zod.string().nullish()
-})
-
-
-/**
- * @summary Remove a symbol from watchlist
- */
-export const RemoveFromWatchlistParams = zod.object({
-  "id": zod.coerce.number()
-})
-
-export const RemoveFromWatchlistResponse = zod.void()
-
-
-/**
- * @summary Get overall market analytics summary
- */
-export const GetAnalyticsSummaryResponse = zod.object({
-  "totalPairs": zod.number(),
-  "buySignals": zod.number(),
-  "sellSignals": zod.number(),
-  "neutralSignals": zod.number(),
-  "avgStrength": zod.number(),
-  "highConfidenceCount": zod.number().describe('Signals with strength >= 80'),
-  "lastUpdated": zod.string()
-})
-
-
-/**
- * @summary Get top highest-confidence signals
- */
-export const listTopSignalsQueryLimitDefault = 5;
-
-export const ListTopSignalsQueryParams = zod.object({
-  "limit": zod.coerce.number().default(listTopSignalsQueryLimitDefault)
-})
-
-export const ListTopSignalsResponseItem = zod.object({
-  "symbol": zod.string().describe('Trading pair symbol e.g. BTC\/USDT'),
-  "market": zod.enum(['crypto', 'forex', 'commodity']),
-  "direction": zod.enum(['BUY', 'SELL', 'NEUTRAL']),
-  "strength": zod.number().describe('Signal strength 0-100'),
-  "price": zod.number(),
-  "change24h": zod.number(),
-  "changePercent24h": zod.number(),
-  "volume24h": zod.number().nullish(),
-  "entryPrice": zod.number().nullish(),
-  "stopLoss": zod.number().nullish(),
-  "takeProfit": zod.number().nullish(),
-  "timeframe": zod.string().optional(),
-  "updatedAt": zod.string()
-})
-export const ListTopSignalsResponse = zod.array(ListTopSignalsResponseItem)
-
-
-/**
- * @summary Market overview by category
- */
-export const GetMarketOverviewResponse = zod.object({
-  "crypto": zod.object({
-  "total": zod.number(),
-  "buy": zod.number(),
-  "sell": zod.number(),
-  "neutral": zod.number(),
-  "avgStrength": zod.number(),
-  "topSignal": zod.string().nullable()
-}),
-  "forex": zod.object({
-  "total": zod.number(),
-  "buy": zod.number(),
-  "sell": zod.number(),
-  "neutral": zod.number(),
-  "avgStrength": zod.number(),
-  "topSignal": zod.string().nullable()
-}),
-  "commodity": zod.object({
-  "total": zod.number(),
-  "buy": zod.number(),
-  "sell": zod.number(),
-  "neutral": zod.number(),
-  "avgStrength": zod.number(),
-  "topSignal": zod.string().nullable()
-})
-})
 
 

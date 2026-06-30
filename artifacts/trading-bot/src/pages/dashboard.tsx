@@ -1,226 +1,322 @@
 import { useState } from "react";
+import { useQueryClient } from "@tanstack/react-query";
 import { 
-  useGetAnalyticsSummary, 
-  useListTopSignals, 
-  useGetMarketOverview, 
+  useGetRecommendation,
+  useGetMonitor,
+  getGetMonitorQueryKey,
+  useStartMonitor,
+  useStopMonitor,
   useListSignals,
-  SignalDirection
+  MonitorInputDirection
 } from "@workspace/api-client-react";
+import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { ArrowUpRight, ArrowDownRight, AlertTriangle, Target, Activity, ShieldAlert, Crosshair, ChevronRight } from "lucide-react";
 import { SignalCard } from "@/components/ui/signal-card";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Activity, ArrowDownRight, ArrowUpRight, BarChart3, Clock, Minus, Target } from "lucide-react";
-import { formatDistanceToNow } from "date-fns";
+import { Link } from "wouter";
+import { useToast } from "@/hooks/use-toast";
 
 export default function Dashboard() {
-  const [selectedMarket, setSelectedMarket] = useState<string>("all");
-  const [selectedDirection, setSelectedDirection] = useState<string>("ALL");
+  const queryClient = useQueryClient();
+  const { toast } = useToast();
 
-  const { data: summary, isLoading: loadingSummary } = useGetAnalyticsSummary();
-  const { data: topSignals, isLoading: loadingTop } = useListTopSignals({ limit: 4 });
-  const { data: marketOverview, isLoading: loadingOverview } = useGetMarketOverview();
-  
-  const { data: signals, isLoading: loadingSignals } = useListSignals({
-    market: selectedMarket !== "all" ? selectedMarket as any : undefined,
-    direction: selectedDirection !== "ALL" ? selectedDirection as SignalDirection : undefined,
+  const { data: recommendation, isLoading: loadingRec } = useGetRecommendation({
+    query: { refetchInterval: 30000 }
   });
 
+  const { data: monitor, isLoading: loadingMonitor } = useGetMonitor({
+    query: { 
+      refetchInterval: 15000,
+      queryKey: getGetMonitorQueryKey() 
+    }
+  });
+
+  const { data: signals, isLoading: loadingSignals } = useListSignals();
+
+  const startMonitorMutation = useStartMonitor({
+    mutation: {
+      onSuccess: () => {
+        queryClient.invalidateQueries({ queryKey: getGetMonitorQueryKey() });
+        setShowMonitorForm(false);
+        toast({ title: "Monitoring Started", description: "Your trade is now being tracked." });
+      }
+    }
+  });
+
+  const stopMonitorMutation = useStopMonitor({
+    mutation: {
+      onSuccess: () => {
+        queryClient.invalidateQueries({ queryKey: getGetMonitorQueryKey() });
+        toast({ title: "Monitoring Stopped", description: "Trade marked as closed." });
+      }
+    }
+  });
+
+  const [showMonitorForm, setShowMonitorForm] = useState(false);
+  const [entryPrice, setEntryPrice] = useState("");
+
+  const handleStartMonitor = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!recommendation || !entryPrice) return;
+    
+    startMonitorMutation.mutate({
+      data: {
+        symbol: recommendation.symbol,
+        direction: recommendation.direction as MonitorInputDirection,
+        entryPrice: parseFloat(entryPrice)
+      }
+    });
+  };
+
+  const handleStopMonitor = () => {
+    stopMonitorMutation.mutate({});
+  };
+
+  const otherSignals = signals?.filter(s => s.symbol !== recommendation?.symbol).slice(0, 4) || [];
+
   return (
-    <div className="space-y-6">
-      {/* Analytics Summary */}
-      <section className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <Card className="bg-card">
-          <CardContent className="p-4">
-            <div className="flex justify-between items-center mb-2">
-              <span className="text-sm font-medium text-muted-foreground uppercase tracking-wider">Total Pairs</span>
-              <Activity className="h-4 w-4 text-primary" />
-            </div>
-            {loadingSummary ? (
-              <div className="h-8 w-16 bg-secondary animate-pulse rounded" />
-            ) : (
-              <div className="text-2xl font-bold font-mono">{summary?.totalPairs || 0}</div>
-            )}
-          </CardContent>
-        </Card>
-        
-        <Card className="bg-card">
-          <CardContent className="p-4">
-            <div className="flex justify-between items-center mb-2">
-              <span className="text-sm font-medium text-muted-foreground uppercase tracking-wider">Buy Signals</span>
-              <ArrowUpRight className="h-4 w-4 text-primary" />
-            </div>
-            {loadingSummary ? (
-              <div className="h-8 w-16 bg-secondary animate-pulse rounded" />
-            ) : (
-              <div className="text-2xl font-bold font-mono text-primary">{summary?.buySignals || 0}</div>
-            )}
-          </CardContent>
-        </Card>
-
-        <Card className="bg-card">
-          <CardContent className="p-4">
-            <div className="flex justify-between items-center mb-2">
-              <span className="text-sm font-medium text-muted-foreground uppercase tracking-wider">Sell Signals</span>
-              <ArrowDownRight className="h-4 w-4 text-destructive" />
-            </div>
-            {loadingSummary ? (
-              <div className="h-8 w-16 bg-secondary animate-pulse rounded" />
-            ) : (
-              <div className="text-2xl font-bold font-mono text-destructive">{summary?.sellSignals || 0}</div>
-            )}
-          </CardContent>
-        </Card>
-
-        <Card className="bg-card border-primary/20">
-          <CardContent className="p-4">
-            <div className="flex justify-between items-center mb-2">
-              <span className="text-sm font-medium text-primary uppercase tracking-wider">High Conviction</span>
-              <Target className="h-4 w-4 text-primary" />
-            </div>
-            {loadingSummary ? (
-              <div className="h-8 w-16 bg-secondary animate-pulse rounded" />
-            ) : (
-              <div className="text-2xl font-bold font-mono text-primary">{summary?.highConfidenceCount || 0}</div>
-            )}
-          </CardContent>
-        </Card>
-      </section>
-
-      {/* Top Signals */}
+    <div className="space-y-12 pb-12">
+      
+      {/* 1. TOP RECOMMENDATION */}
       <section>
-        <div className="flex items-center gap-2 mb-4">
-          <BarChart3 className="h-5 w-5 text-primary" />
-          <h2 className="text-xl font-bold tracking-tight">High Confidence Signals</h2>
-        </div>
+        <h2 className="text-sm font-bold text-muted-foreground uppercase tracking-widest mb-4">Trade Now</h2>
         
-        {loadingTop ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-            {[1, 2, 3, 4].map(i => <div key={i} className="h-32 bg-card animate-pulse rounded-lg border border-border" />)}
+        {loadingRec ? (
+          <div className="h-96 bg-card animate-pulse border border-border flex items-center justify-center">
+            <span className="text-muted-foreground font-mono">Analyzing Markets...</span>
           </div>
-        ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-            {topSignals?.map((signal) => (
-              <SignalCard key={signal.symbol} signal={signal} />
-            ))}
-            {(!topSignals || topSignals.length === 0) && (
-              <div className="col-span-full py-8 text-center text-muted-foreground border border-dashed rounded-lg">
-                No high confidence signals at the moment
-              </div>
-            )}
-          </div>
-        )}
-      </section>
-
-      {/* Market Overview */}
-      <section>
-        <Card className="bg-card">
-          <CardHeader className="pb-4">
-            <CardTitle className="text-lg flex items-center justify-between">
-              <span>Market Overview</span>
-              {summary?.lastUpdated && (
-                <span className="text-xs font-normal text-muted-foreground flex items-center gap-1 font-mono">
-                  <Clock className="h-3 w-3" />
-                  Updated {formatDistanceToNow(new Date(summary.lastUpdated))} ago
-                </span>
-              )}
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            {loadingOverview ? (
-              <div className="h-40 bg-secondary/50 animate-pulse rounded" />
-            ) : (
-              <Tabs defaultValue="crypto">
-                <TabsList className="mb-4">
-                  <TabsTrigger value="crypto" className="uppercase tracking-widest text-xs">Crypto</TabsTrigger>
-                  <TabsTrigger value="forex" className="uppercase tracking-widest text-xs">Forex</TabsTrigger>
-                  <TabsTrigger value="commodity" className="uppercase tracking-widest text-xs">Commodities</TabsTrigger>
-                </TabsList>
+        ) : recommendation ? (
+          <div className="border-4 border-border bg-card overflow-hidden">
+            <div className={`p-8 md:p-12 ${recommendation.direction === 'BUY' ? 'bg-[hsl(var(--buy))/0.05]' : 'bg-[hsl(var(--sell))/0.05]'}`}>
+              
+              <div className="flex flex-col md:flex-row md:items-start justify-between gap-6 mb-8">
+                <div>
+                  <div className="flex items-center gap-3 mb-2">
+                    <span className="text-sm font-bold uppercase tracking-widest bg-foreground text-background px-2 py-0.5">
+                      {recommendation.market}
+                    </span>
+                    <span className="text-sm font-bold uppercase tracking-widest text-muted-foreground border border-border px-2 py-0.5">
+                      {recommendation.timeframe}
+                    </span>
+                  </div>
+                  <h1 className="text-5xl md:text-7xl font-black tracking-tighter mb-4">
+                    {recommendation.symbol}
+                  </h1>
+                  <div className="flex items-center gap-4">
+                    <div className={`text-2xl md:text-3xl font-black uppercase tracking-tighter px-4 py-2 border-2
+                      ${recommendation.direction === 'BUY' 
+                        ? 'text-[hsl(var(--buy))] border-[hsl(var(--buy))]' 
+                        : 'text-[hsl(var(--sell))] border-[hsl(var(--sell))]'}`}
+                    >
+                      {recommendation.direction}
+                    </div>
+                    <div className="font-mono text-3xl md:text-4xl tracking-tight">
+                      {recommendation.price.toLocaleString(undefined, { maximumFractionDigits: 6 })}
+                    </div>
+                  </div>
+                </div>
                 
-                {["crypto", "forex", "commodity"].map((marketKey) => {
-                  const data = marketOverview?.[marketKey as keyof typeof marketOverview];
-                  return (
-                    <TabsContent key={marketKey} value={marketKey}>
-                      <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
-                        <div className="p-4 bg-secondary rounded-lg border border-border">
-                          <p className="text-xs text-muted-foreground mb-1 uppercase tracking-wider">Total Pairs</p>
-                          <p className="text-xl font-mono">{data?.total || 0}</p>
-                        </div>
-                        <div className="p-4 bg-secondary rounded-lg border border-border">
-                          <p className="text-xs text-muted-foreground mb-1 uppercase tracking-wider">Avg Strength</p>
-                          <p className="text-xl font-mono">{data?.avgStrength || 0}%</p>
-                        </div>
-                        <div className="p-4 bg-primary/10 rounded-lg border border-primary/20 text-primary">
-                          <p className="text-xs mb-1 uppercase tracking-wider">Buy Signals</p>
-                          <p className="text-xl font-mono">{data?.buy || 0}</p>
-                        </div>
-                        <div className="p-4 bg-destructive/10 rounded-lg border border-destructive/20 text-destructive">
-                          <p className="text-xs mb-1 uppercase tracking-wider">Sell Signals</p>
-                          <p className="text-xl font-mono">{data?.sell || 0}</p>
-                        </div>
-                        <div className="p-4 bg-secondary rounded-lg border border-border col-span-2 md:col-span-1">
-                          <p className="text-xs text-muted-foreground mb-1 uppercase tracking-wider">Top Signal</p>
-                          <p className="text-xl font-mono truncate">{data?.topSignal || "-"}</p>
-                        </div>
-                      </div>
-                    </TabsContent>
-                  );
-                })}
-              </Tabs>
-            )}
-          </CardContent>
-        </Card>
+                <div className="md:text-right w-full md:w-48">
+                  <div className="text-sm font-bold uppercase tracking-widest text-muted-foreground mb-2">Confidence</div>
+                  <div className="text-4xl font-black mb-2">{recommendation.strength}%</div>
+                  <div className="h-2 w-full bg-secondary overflow-hidden">
+                    <div 
+                      className={`h-full ${recommendation.direction === 'BUY' ? 'bg-[hsl(var(--buy))]' : 'bg-[hsl(var(--sell))]'}`}
+                      style={{ width: `${recommendation.strength}%` }}
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <div className="mb-8">
+                <p className="text-lg md:text-xl text-muted-foreground leading-relaxed max-w-2xl border-l-4 border-primary pl-4">
+                  {recommendation.reasoning}
+                </p>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+                <div className="bg-background border border-border p-4">
+                  <div className="text-sm font-bold uppercase tracking-widest text-muted-foreground mb-1 flex items-center gap-2">
+                    <Target className="w-4 h-4" /> Entry
+                  </div>
+                  <div className="font-mono text-xl">{recommendation.entryPrice || "-"}</div>
+                </div>
+                <div className="bg-[hsl(var(--sell))/0.05] border border-[hsl(var(--sell))/0.2] p-4">
+                  <div className="text-sm font-bold uppercase tracking-widest text-[hsl(var(--sell))] mb-1 flex items-center gap-2">
+                    <ShieldAlert className="w-4 h-4" /> Stop Loss
+                  </div>
+                  <div className="font-mono text-xl text-[hsl(var(--sell))]">{recommendation.stopLoss || "-"}</div>
+                </div>
+                <div className="bg-[hsl(var(--buy))/0.05] border border-[hsl(var(--buy))/0.2] p-4">
+                  <div className="text-sm font-bold uppercase tracking-widest text-[hsl(var(--buy))] mb-1 flex items-center gap-2">
+                    <Crosshair className="w-4 h-4" /> Take Profit
+                  </div>
+                  <div className="font-mono text-xl text-[hsl(var(--buy))]">{recommendation.takeProfit || "-"}</div>
+                </div>
+              </div>
+
+              {!showMonitorForm ? (
+                <Button 
+                  size="lg" 
+                  className={`w-full md:w-auto text-lg font-black uppercase tracking-widest h-16 px-8
+                    ${recommendation.direction === 'BUY' 
+                      ? 'bg-[hsl(var(--buy))] hover:bg-[hsl(var(--buy))/0.8] text-black' 
+                      : 'bg-[hsl(var(--sell))] hover:bg-[hsl(var(--sell))/0.8] text-white'}`}
+                  onClick={() => {
+                    setEntryPrice(recommendation.price.toString());
+                    setShowMonitorForm(true);
+                  }}
+                  disabled={monitor?.isActive}
+                >
+                  I'm Trading This
+                </Button>
+              ) : (
+                <form onSubmit={handleStartMonitor} className="bg-background border border-border p-6 flex flex-col md:flex-row gap-4 items-end">
+                  <div className="w-full md:w-64">
+                    <label className="text-sm font-bold uppercase tracking-widest text-muted-foreground mb-2 block">My Entry Price</label>
+                    <Input 
+                      type="number" 
+                      step="any" 
+                      required 
+                      value={entryPrice} 
+                      onChange={e => setEntryPrice(e.target.value)}
+                      className="h-12 font-mono text-lg rounded-none border-2 focus-visible:ring-0 focus-visible:border-primary"
+                    />
+                  </div>
+                  <Button 
+                    type="submit" 
+                    size="lg"
+                    className="h-12 rounded-none font-bold uppercase tracking-widest w-full md:w-auto"
+                    disabled={startMonitorMutation.isPending}
+                  >
+                    Start Monitoring
+                  </Button>
+                  <Button 
+                    type="button" 
+                    variant="ghost" 
+                    size="lg"
+                    className="h-12 rounded-none font-bold uppercase tracking-widest w-full md:w-auto"
+                    onClick={() => setShowMonitorForm(false)}
+                  >
+                    Cancel
+                  </Button>
+                </form>
+              )}
+            </div>
+          </div>
+        ) : (
+          <div className="border border-border p-8 text-center text-muted-foreground">
+            No active recommendation found.
+          </div>
+        )}
       </section>
 
-      {/* All Signals */}
-      <section>
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-4">
-          <h2 className="text-xl font-bold tracking-tight">Signal Screener</h2>
+      {/* 2. ACTIVE TRADE MONITOR */}
+      {monitor?.isActive && (
+        <section>
+          <h2 className="text-sm font-bold text-muted-foreground uppercase tracking-widest mb-4">Active Trade</h2>
           
-          <div className="flex gap-2 w-full md:w-auto">
-            <Select value={selectedMarket} onValueChange={setSelectedMarket}>
-              <SelectTrigger className="w-full md:w-32 uppercase tracking-widest text-xs font-bold">
-                <SelectValue placeholder="Market" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">ALL</SelectItem>
-                <SelectItem value="crypto">CRYPTO</SelectItem>
-                <SelectItem value="forex">FOREX</SelectItem>
-                <SelectItem value="commodity">COMMODITY</SelectItem>
-              </SelectContent>
-            </Select>
+          <div className={`border-4 p-6 md:p-8 relative overflow-hidden
+            ${monitor.alertLevel === 'danger' 
+              ? 'border-[hsl(var(--sell))] bg-[hsl(var(--sell))/0.1] animate-pulse-fast' 
+              : monitor.alertLevel === 'warning'
+                ? 'border-yellow-500 bg-yellow-500/10'
+                : 'border-[hsl(var(--buy))] bg-[hsl(var(--buy))/0.05]'
+            }`}
+          >
+            {monitor.alertLevel === 'danger' && (
+              <div className="absolute top-0 left-0 w-full bg-[hsl(var(--sell))] text-white text-center font-black uppercase tracking-widest py-1 text-sm">
+                Action Required
+              </div>
+            )}
             
-            <Select value={selectedDirection} onValueChange={setSelectedDirection}>
-              <SelectTrigger className="w-full md:w-32 uppercase tracking-widest text-xs font-bold">
-                <SelectValue placeholder="Direction" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="ALL">ALL</SelectItem>
-                <SelectItem value="BUY">BUY</SelectItem>
-                <SelectItem value="SELL">SELL</SelectItem>
-                <SelectItem value="NEUTRAL">NEUTRAL</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-        </div>
+            <div className={`flex flex-col md:flex-row justify-between items-start md:items-center gap-6 ${monitor.alertLevel === 'danger' ? 'mt-4' : ''}`}>
+              <div>
+                <div className="flex items-center gap-3 mb-2">
+                  <span className="text-2xl font-black tracking-tight">{monitor.symbol}</span>
+                  <span className={`px-2 py-0.5 text-xs font-bold uppercase tracking-widest border
+                    ${monitor.direction === 'BUY' ? 'text-[hsl(var(--buy))] border-[hsl(var(--buy))/0.5]' : 'text-[hsl(var(--sell))] border-[hsl(var(--sell))/0.5]'}`}
+                  >
+                    {monitor.direction}
+                  </span>
+                </div>
+                
+                {monitor.alert ? (
+                  <p className={`text-lg md:text-2xl font-black mt-2 max-w-xl
+                    ${monitor.alertLevel === 'danger' ? 'text-[hsl(var(--sell))]' : 'text-yellow-500'}`}
+                  >
+                    {monitor.alert}
+                  </p>
+                ) : (
+                  <p className="text-lg font-bold text-[hsl(var(--buy))] mt-2 flex items-center gap-2">
+                    <Activity className="w-5 h-5" /> Your trade is on track
+                  </p>
+                )}
+              </div>
+              
+              <div className="flex items-center gap-8 w-full md:w-auto p-4 bg-background/50 border border-border">
+                <div>
+                  <div className="text-xs font-bold uppercase tracking-widest text-muted-foreground mb-1">P&L</div>
+                  <div className={`font-mono text-2xl font-black
+                    ${(monitor.pnlPercent || 0) >= 0 ? 'text-[hsl(var(--buy))]' : 'text-[hsl(var(--sell))]'}`}
+                  >
+                    {(monitor.pnlPercent || 0) >= 0 ? "+" : ""}{(monitor.pnlPercent || 0).toFixed(2)}%
+                  </div>
+                </div>
+                <div>
+                  <div className="text-xs font-bold uppercase tracking-widest text-muted-foreground mb-1">Entry</div>
+                  <div className="font-mono text-lg">{monitor.entryPrice?.toLocaleString()}</div>
+                </div>
+                <div>
+                  <div className="text-xs font-bold uppercase tracking-widest text-muted-foreground mb-1">Current</div>
+                  <div className="font-mono text-lg">{monitor.currentPrice?.toLocaleString()}</div>
+                </div>
+              </div>
+            </div>
 
+            <div className="mt-8 flex justify-end">
+              <Button 
+                variant={monitor.alertLevel === 'danger' ? "destructive" : "outline"}
+                size="lg"
+                className="font-black uppercase tracking-widest rounded-none border-2"
+                onClick={handleStopMonitor}
+                disabled={stopMonitorMutation.isPending}
+              >
+                Mark as Closed
+              </Button>
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* 3. OTHER SIGNALS */}
+      <section>
+        <div className="flex items-center justify-between mb-4">
+          <h2 className="text-sm font-bold text-muted-foreground uppercase tracking-widest">Other Opportunities</h2>
+          <Link href="/signals" className="text-sm font-bold text-primary flex items-center gap-1 hover:underline">
+            View All <ChevronRight className="w-4 h-4" />
+          </Link>
+        </div>
+        
         {loadingSignals ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-            {[1, 2, 3, 4, 5, 6, 7, 8].map(i => <div key={i} className="h-32 bg-card animate-pulse rounded-lg border border-border" />)}
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+            {[1, 2, 3, 4].map(i => <div key={i} className="h-32 bg-card animate-pulse border border-border" />)}
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-            {signals?.map((signal) => (
+            {otherSignals.map(signal => (
               <SignalCard key={signal.symbol} signal={signal} />
             ))}
-            {(!signals || signals.length === 0) && (
-              <div className="col-span-full py-12 text-center text-muted-foreground border border-dashed rounded-lg bg-card">
-                No signals match your criteria
+            {otherSignals.length === 0 && (
+              <div className="col-span-full py-8 text-center text-muted-foreground border border-border border-dashed">
+                No other signals available
               </div>
             )}
           </div>
         )}
       </section>
+
     </div>
   );
 }

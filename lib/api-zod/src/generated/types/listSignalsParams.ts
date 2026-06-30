@@ -9,16 +9,6 @@ import type { ListSignalsDirection } from './listSignalsDirection';
 import type { ListSignalsMarket } from './listSignalsMarket';
 
 export type ListSignalsParams = {
-/**
- * Filter by market type
- */
 market?: ListSignalsMarket;
-/**
- * Filter by signal direction
- */
 direction?: ListSignalsDirection;
-/**
- * Minimum signal strength (0-100)
- */
-minStrength?: number;
 };

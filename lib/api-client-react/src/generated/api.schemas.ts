@@ -9,6 +9,44 @@ export interface HealthStatus {
   status: string;
 }
 
+export type RecommendationMarket = typeof RecommendationMarket[keyof typeof RecommendationMarket];
+
+
+export const RecommendationMarket = {
+  crypto: 'crypto',
+  forex: 'forex',
+  commodity: 'commodity',
+} as const;
+
+export type RecommendationDirection = typeof RecommendationDirection[keyof typeof RecommendationDirection];
+
+
+export const RecommendationDirection = {
+  BUY: 'BUY',
+  SELL: 'SELL',
+} as const;
+
+export interface Recommendation {
+  symbol: string;
+  market: RecommendationMarket;
+  direction: RecommendationDirection;
+  /** Confidence 0-100 */
+  strength: number;
+  price: number;
+  change24h: number;
+  changePercent24h: number;
+  timeframe: string;
+  /** Plain English explanation of why to trade this */
+  reasoning: string;
+  /** @nullable */
+  entryPrice?: number | null;
+  /** @nullable */
+  stopLoss?: number | null;
+  /** @nullable */
+  takeProfit?: number | null;
+  updatedAt: string;
+}
+
 export type SignalMarket = typeof SignalMarket[keyof typeof SignalMarket];
 
 
@@ -28,24 +66,20 @@ export const SignalDirection = {
 } as const;
 
 export interface Signal {
-  /** Trading pair symbol e.g. BTC/USDT */
   symbol: string;
   market: SignalMarket;
   direction: SignalDirection;
-  /** Signal strength 0-100 */
   strength: number;
   price: number;
   change24h: number;
   changePercent24h: number;
-  /** @nullable */
-  volume24h?: number | null;
+  timeframe: string;
   /** @nullable */
   entryPrice?: number | null;
   /** @nullable */
   stopLoss?: number | null;
   /** @nullable */
   takeProfit?: number | null;
-  timeframe?: string;
   updatedAt: string;
 }
 
@@ -77,23 +111,11 @@ export const IndicatorSignal = {
 } as const;
 
 export interface Indicator {
-  /** Indicator name (RSI, MACD, EMA, etc.) */
   name: string;
   value: number;
   signal: IndicatorSignal;
-  /** Weight in signal calculation 0-1 */
   weight: number;
-  description?: string;
-}
-
-export interface Candle {
-  /** Unix timestamp in seconds */
-  time: number;
-  open: number;
-  high: number;
-  low: number;
-  close: number;
-  volume: number;
+  description: string;
 }
 
 export interface SignalDetail {
@@ -104,18 +126,69 @@ export interface SignalDetail {
   price: number;
   change24h: number;
   changePercent24h: number;
-  /** @nullable */
-  volume24h?: number | null;
+  timeframe: string;
   /** @nullable */
   entryPrice?: number | null;
   /** @nullable */
   stopLoss?: number | null;
   /** @nullable */
   takeProfit?: number | null;
-  timeframe?: string;
   updatedAt: string;
   indicators: Indicator[];
-  candles?: Candle[];
+}
+
+export type MonitorInputDirection = typeof MonitorInputDirection[keyof typeof MonitorInputDirection];
+
+
+export const MonitorInputDirection = {
+  BUY: 'BUY',
+  SELL: 'SELL',
+} as const;
+
+export interface MonitorInput {
+  symbol: string;
+  direction: MonitorInputDirection;
+  entryPrice: number;
+}
+
+/**
+ * @nullable
+ */
+export type MonitorStatusAlertLevel = typeof MonitorStatusAlertLevel[keyof typeof MonitorStatusAlertLevel] | null;
+
+
+export const MonitorStatusAlertLevel = {
+  warning: 'warning',
+  danger: 'danger',
+} as const;
+
+export interface MonitorStatus {
+  isActive: boolean;
+  /** @nullable */
+  symbol?: string | null;
+  /** @nullable */
+  direction?: string | null;
+  /** @nullable */
+  entryPrice?: number | null;
+  /** @nullable */
+  currentPrice?: number | null;
+  /** @nullable */
+  currentStrength?: number | null;
+  /** @nullable */
+  currentDirection?: string | null;
+  /**
+     * Unrealised P&L as a percentage
+     * @nullable
+     */
+  pnlPercent?: number | null;
+  /**
+     * Non-null when you should close the trade now — plain English reason
+     * @nullable
+     */
+  alert?: string | null;
+  /** @nullable */
+  alertLevel?: MonitorStatusAlertLevel;
+  updatedAt: string;
 }
 
 export type PairMarket = typeof PairMarket[keyof typeof PairMarket];
@@ -135,79 +208,9 @@ export interface Pair {
   isActive: boolean;
 }
 
-export type WatchlistItemMarket = typeof WatchlistItemMarket[keyof typeof WatchlistItemMarket];
-
-
-export const WatchlistItemMarket = {
-  crypto: 'crypto',
-  forex: 'forex',
-  commodity: 'commodity',
-} as const;
-
-export interface WatchlistItem {
-  id: number;
-  symbol: string;
-  market: WatchlistItemMarket;
-  addedAt: string;
-  /** @nullable */
-  notes?: string | null;
-}
-
-export type WatchlistInputMarket = typeof WatchlistInputMarket[keyof typeof WatchlistInputMarket];
-
-
-export const WatchlistInputMarket = {
-  crypto: 'crypto',
-  forex: 'forex',
-  commodity: 'commodity',
-} as const;
-
-export interface WatchlistInput {
-  symbol: string;
-  market: WatchlistInputMarket;
-  notes?: string;
-}
-
-export interface AnalyticsSummary {
-  totalPairs: number;
-  buySignals: number;
-  sellSignals: number;
-  neutralSignals: number;
-  avgStrength: number;
-  /** Signals with strength >= 80 */
-  highConfidenceCount: number;
-  lastUpdated: string;
-}
-
-export interface MarketStats {
-  total: number;
-  buy: number;
-  sell: number;
-  neutral: number;
-  avgStrength: number;
-  /** @nullable */
-  topSignal: string | null;
-}
-
-export interface MarketOverview {
-  crypto: MarketStats;
-  forex: MarketStats;
-  commodity: MarketStats;
-}
-
 export type ListSignalsParams = {
-/**
- * Filter by market type
- */
 market?: ListSignalsMarket;
-/**
- * Filter by signal direction
- */
 direction?: ListSignalsDirection;
-/**
- * Minimum signal strength (0-100)
- */
-minStrength?: number;
 };
 
 export type ListSignalsMarket = typeof ListSignalsMarket[keyof typeof ListSignalsMarket];
@@ -228,8 +231,4 @@ export const ListSignalsDirection = {
   SELL: 'SELL',
   NEUTRAL: 'NEUTRAL',
 } as const;
-
-export type ListTopSignalsParams = {
-limit?: number;
-};
 

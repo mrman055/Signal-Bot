@@ -5,18 +5,21 @@
  * Trading Signal Bot API
  * OpenAPI spec version: 0.1.0
  */
-import type { SignalDirection } from './signalDirection';
-import type { SignalMarket } from './signalMarket';
+import type { RecommendationDirection } from './recommendationDirection';
+import type { RecommendationMarket } from './recommendationMarket';
 
-export interface Signal {
+export interface Recommendation {
   symbol: string;
-  market: SignalMarket;
-  direction: SignalDirection;
+  market: RecommendationMarket;
+  direction: RecommendationDirection;
+  /** Confidence 0-100 */
   strength: number;
   price: number;
   change24h: number;
   changePercent24h: number;
   timeframe: string;
+  /** Plain English explanation of why to trade this */
+  reasoning: string;
   /** @nullable */
   entryPrice?: number | null;
   /** @nullable */

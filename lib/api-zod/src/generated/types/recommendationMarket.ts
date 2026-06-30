@@ -6,10 +6,10 @@
  * OpenAPI spec version: 0.1.0
  */
 
-export type WatchlistInputMarket = typeof WatchlistInputMarket[keyof typeof WatchlistInputMarket];
+export type RecommendationMarket = typeof RecommendationMarket[keyof typeof RecommendationMarket];
 
 
-export const WatchlistInputMarket = {
+export const RecommendationMarket = {
   crypto: 'crypto',
   forex: 'forex',
   commodity: 'commodity',
