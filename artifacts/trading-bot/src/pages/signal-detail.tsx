@@ -9,12 +9,15 @@ import { Skeleton } from "@/components/ui/skeleton";
 
 export default function SignalDetail() {
   const [, params] = useRoute("/signals/:symbol");
-  const symbolStr = params?.symbol ? decodeURIComponent(params.symbol) : "";
+  // URL uses '_' as separator (e.g. XAU_USD). Convert back to '/' for the real symbol.
+  const symbolStr = params?.symbol ? params.symbol.replace(/_/g, '/') : "";
+  // Encode the slash so the generated fetch builds /api/signals/XAU%2FUSD, not /api/signals/XAU/USD
+  const encodedSymbol = symbolStr ? encodeURIComponent(symbolStr) : "";
 
-  const { data: signal, isLoading } = useGetSignalBySymbol(symbolStr, {
+  const { data: signal, isLoading } = useGetSignalBySymbol(encodedSymbol, {
     query: {
-      enabled: !!symbolStr,
-      queryKey: getGetSignalBySymbolQueryKey(symbolStr),
+      enabled: !!encodedSymbol,
+      queryKey: getGetSignalBySymbolQueryKey(encodedSymbol),
       refetchInterval: 30000,
     }
   });

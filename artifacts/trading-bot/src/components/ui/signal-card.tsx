@@ -25,7 +25,7 @@ export function SignalCard({ signal }: SignalCardProps) {
   };
 
   return (
-    <Link href={`/signals/${encodeURIComponent(signal.symbol)}`}>
+    <Link href={`/signals/${signal.symbol.replace(/\//g, '_')}`}>
       <Card className="hover:border-primary/50 transition-colors cursor-pointer group bg-card overflow-hidden">
         <CardContent className="p-4">
           <div className="flex justify-between items-start mb-4">
