@@ -118,6 +118,15 @@ export interface Indicator {
   description: string;
 }
 
+export interface Candle {
+  time: number;
+  open: number;
+  high: number;
+  low: number;
+  close: number;
+  volume: number;
+}
+
 export interface SignalDetail {
   symbol: string;
   market: SignalDetailMarket;
@@ -135,6 +144,7 @@ export interface SignalDetail {
   takeProfit?: number | null;
   updatedAt: string;
   indicators: Indicator[];
+  candles?: Candle[];
 }
 
 export type MonitorInputDirection = typeof MonitorInputDirection[keyof typeof MonitorInputDirection];

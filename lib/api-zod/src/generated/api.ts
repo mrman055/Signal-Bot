@@ -88,7 +88,15 @@ export const GetSignalBySymbolResponse = zod.object({
   "signal": zod.enum(['BUY', 'SELL', 'NEUTRAL']),
   "weight": zod.number(),
   "description": zod.string()
-}))
+})),
+  "candles": zod.array(zod.object({
+  "time": zod.number(),
+  "open": zod.number(),
+  "high": zod.number(),
+  "low": zod.number(),
+  "close": zod.number(),
+  "volume": zod.number()
+})).optional()
 })
 
 

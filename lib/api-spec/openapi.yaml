@@ -416,6 +416,27 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/Indicator"
+        candles:
+          type: array
+          items:
+            $ref: "#/components/schemas/Candle"
+
+    Candle:
+      type: object
+      required: [time, open, high, low, close, volume]
+      properties:
+        time:
+          type: number
+        open:
+          type: number
+        high:
+          type: number
+        low:
+          type: number
+        close:
+          type: number
+        volume:
+          type: number
 
     Indicator:
       type: object

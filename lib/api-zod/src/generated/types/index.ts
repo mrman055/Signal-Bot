@@ -10,6 +10,7 @@ export * from './alertInput';
 export * from './alertInputDirection';
 export * from './alertInputMarket';
 export * from './alertToggle';
+export * from './candle';
 export * from './healthStatus';
 export * from './indicator';
 export * from './indicatorSignal';
