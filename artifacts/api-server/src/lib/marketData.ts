@@ -10,26 +10,33 @@ export type PairConfig = {
 };
 
 export const TRACKED_PAIRS: PairConfig[] = [
-  { symbol: "BTC/USD",  market: "crypto",    baseAsset: "BTC", quoteAsset: "USD", twelveDataSymbol: "BTC/USD" },
-  { symbol: "ETH/USD",  market: "crypto",    baseAsset: "ETH", quoteAsset: "USD", twelveDataSymbol: "ETH/USD" },
-  { symbol: "SOL/USD",  market: "crypto",    baseAsset: "SOL", quoteAsset: "USD", twelveDataSymbol: "SOL/USD" },
-  { symbol: "BNB/USD",  market: "crypto",    baseAsset: "BNB", quoteAsset: "USD", twelveDataSymbol: "BNB/USD" },
-  { symbol: "XRP/USD",  market: "crypto",    baseAsset: "XRP", quoteAsset: "USD", twelveDataSymbol: "XRP/USD" },
+  // Commodities — most popular MT5 pairs
+  { symbol: "XAU/USD",  market: "commodity", baseAsset: "XAU", quoteAsset: "USD", twelveDataSymbol: "XAU/USD" },
+  { symbol: "XAG/USD",  market: "commodity", baseAsset: "XAG", quoteAsset: "USD", twelveDataSymbol: "XAG/USD" },
+  { symbol: "WTI/USD",  market: "commodity", baseAsset: "WTI", quoteAsset: "USD", twelveDataSymbol: "USOIL" },
+  // Major Forex pairs — all available on standard MT5 brokers
   { symbol: "EUR/USD",  market: "forex",     baseAsset: "EUR", quoteAsset: "USD", twelveDataSymbol: "EUR/USD" },
   { symbol: "GBP/USD",  market: "forex",     baseAsset: "GBP", quoteAsset: "USD", twelveDataSymbol: "GBP/USD" },
   { symbol: "USD/JPY",  market: "forex",     baseAsset: "USD", quoteAsset: "JPY", twelveDataSymbol: "USD/JPY" },
   { symbol: "AUD/USD",  market: "forex",     baseAsset: "AUD", quoteAsset: "USD", twelveDataSymbol: "AUD/USD" },
   { symbol: "USD/CAD",  market: "forex",     baseAsset: "USD", quoteAsset: "CAD", twelveDataSymbol: "USD/CAD" },
-  { symbol: "XAU/USD",  market: "commodity", baseAsset: "XAU", quoteAsset: "USD", twelveDataSymbol: "XAU/USD" },
-  { symbol: "XAG/USD",  market: "commodity", baseAsset: "XAG", quoteAsset: "USD", twelveDataSymbol: "XAG/USD" },
-  { symbol: "WTI/USD",  market: "commodity", baseAsset: "WTI", quoteAsset: "USD", twelveDataSymbol: "USOIL" },
+  { symbol: "USD/CHF",  market: "forex",     baseAsset: "USD", quoteAsset: "CHF", twelveDataSymbol: "USD/CHF" },
+  { symbol: "NZD/USD",  market: "forex",     baseAsset: "NZD", quoteAsset: "USD", twelveDataSymbol: "NZD/USD" },
+  // Cross pairs — popular on MT5
+  { symbol: "GBP/JPY",  market: "forex",     baseAsset: "GBP", quoteAsset: "JPY", twelveDataSymbol: "GBP/JPY" },
+  { symbol: "EUR/JPY",  market: "forex",     baseAsset: "EUR", quoteAsset: "JPY", twelveDataSymbol: "EUR/JPY" },
+  { symbol: "EUR/GBP",  market: "forex",     baseAsset: "EUR", quoteAsset: "GBP", twelveDataSymbol: "EUR/GBP" },
+  // Crypto — also available on many MT5 brokers
+  { symbol: "BTC/USD",  market: "crypto",    baseAsset: "BTC", quoteAsset: "USD", twelveDataSymbol: "BTC/USD" },
+  { symbol: "ETH/USD",  market: "crypto",    baseAsset: "ETH", quoteAsset: "USD", twelveDataSymbol: "ETH/USD" },
 ];
 
 const FALLBACK_PRICES: Record<string, number> = {
-  "BTC/USD": 67500, "ETH/USD": 3520,  "SOL/USD": 155,  "BNB/USD": 605,
-  "XRP/USD": 0.635, "EUR/USD": 1.0845, "GBP/USD": 1.2715,"USD/JPY": 157.45,
-  "AUD/USD": 0.6545, "USD/CAD": 1.3625, "XAU/USD": 2338,  "XAG/USD": 29.45,
-  "WTI/USD": 79.8,
+  "XAU/USD": 2338,   "XAG/USD": 29.45,  "WTI/USD": 79.8,
+  "EUR/USD": 1.0845, "GBP/USD": 1.2715, "USD/JPY": 157.45,
+  "AUD/USD": 0.6545, "USD/CAD": 1.3625, "USD/CHF": 0.9025,
+  "NZD/USD": 0.6015, "GBP/JPY": 198.50, "EUR/JPY": 170.20,
+  "EUR/GBP": 0.8515, "BTC/USD": 67500,  "ETH/USD": 3520,
 };
 
 const API_KEY = process.env.TWELVE_DATA_API_KEY;
