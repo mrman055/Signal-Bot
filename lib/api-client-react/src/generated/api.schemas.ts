@@ -242,6 +242,98 @@ export interface WatchlistInput {
   notes?: string | null;
 }
 
+export type PriceAlertMarket = typeof PriceAlertMarket[keyof typeof PriceAlertMarket];
+
+
+export const PriceAlertMarket = {
+  crypto: 'crypto',
+  forex: 'forex',
+  commodity: 'commodity',
+} as const;
+
+export type PriceAlertDirection = typeof PriceAlertDirection[keyof typeof PriceAlertDirection];
+
+
+export const PriceAlertDirection = {
+  BUY: 'BUY',
+  SELL: 'SELL',
+  BOTH: 'BOTH',
+} as const;
+
+export interface PriceAlert {
+  id: number;
+  symbol: string;
+  market: PriceAlertMarket;
+  direction: PriceAlertDirection;
+  /** Minimum signal strength (0-100) to trigger */
+  minConfidence: number;
+  isActive: boolean;
+  createdAt: string;
+}
+
+export type AlertInputMarket = typeof AlertInputMarket[keyof typeof AlertInputMarket];
+
+
+export const AlertInputMarket = {
+  crypto: 'crypto',
+  forex: 'forex',
+  commodity: 'commodity',
+} as const;
+
+export type AlertInputDirection = typeof AlertInputDirection[keyof typeof AlertInputDirection];
+
+
+export const AlertInputDirection = {
+  BUY: 'BUY',
+  SELL: 'SELL',
+  BOTH: 'BOTH',
+} as const;
+
+export interface AlertInput {
+  symbol: string;
+  market: AlertInputMarket;
+  direction: AlertInputDirection;
+  /** Minimum confidence 0-100, defaults to 70 */
+  minConfidence?: number;
+}
+
+export interface AlertToggle {
+  isActive: boolean;
+}
+
+export type TriggeredAlertMarket = typeof TriggeredAlertMarket[keyof typeof TriggeredAlertMarket];
+
+
+export const TriggeredAlertMarket = {
+  crypto: 'crypto',
+  forex: 'forex',
+  commodity: 'commodity',
+} as const;
+
+export type TriggeredAlertDirection = typeof TriggeredAlertDirection[keyof typeof TriggeredAlertDirection];
+
+
+export const TriggeredAlertDirection = {
+  BUY: 'BUY',
+  SELL: 'SELL',
+} as const;
+
+export interface TriggeredAlert {
+  alertId: number;
+  symbol: string;
+  market: TriggeredAlertMarket;
+  direction: TriggeredAlertDirection;
+  strength: number;
+  price: number;
+  /** @nullable */
+  entryPrice?: number | null;
+  /** @nullable */
+  stopLoss?: number | null;
+  /** @nullable */
+  takeProfit?: number | null;
+  minConfidence: number;
+}
+
 export type ListSignalsParams = {
 market?: ListSignalsMarket;
 direction?: ListSignalsDirection;

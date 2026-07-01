@@ -9,6 +9,7 @@ import Dashboard from "@/pages/dashboard";
 import Signals from "@/pages/signals";
 import SignalDetail from "@/pages/signal-detail";
 import Watchlist from "@/pages/watchlist";
+import Alerts from "@/pages/alerts";
 
 const queryClient = new QueryClient();
 
@@ -20,6 +21,7 @@ function Router() {
         <Route path="/signals" component={Signals} />
         <Route path="/signals/:symbol" component={SignalDetail} />
         <Route path="/watchlist" component={Watchlist} />
+        <Route path="/alerts" component={Alerts} />
         <Route component={NotFound} />
       </Switch>
     </Shell>

@@ -9,28 +9,6 @@ args = ["pnpm", "store", "prune"]
 env = { "CI" = "true" }
 
 [workflows]
-runButton = "Project"
-
-[[workflows.workflow]]
-name = "Project"
-mode = "parallel"
-author = "agent"
-
-[[workflows.workflow.tasks]]
-task = "workflow.run"
-args = "artifacts/trading-bot: Trading Signal Bot"
-
-[[workflows.workflow]]
-name = "artifacts/trading-bot: Trading Signal Bot"
-author = "agent"
-
-[workflows.workflow.metadata]
-outputType = "webview"
-
-[[workflows.workflow.tasks]]
-task = "shell.exec"
-args = "PORT=20883 BASE_PATH=/trading-bot/ pnpm --filter @workspace/trading-bot run dev"
-waitForPort = 20883
 
 [agent]
 stack = "PNPM_WORKSPACE"

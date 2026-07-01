@@ -193,6 +193,91 @@ paths:
         "204":
           description: Item removed
 
+  /alerts:
+    get:
+      operationId: getAlerts
+      tags: [alerts]
+      summary: Get all configured price alerts
+      responses:
+        "200":
+          description: List of alerts
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/PriceAlert"
+    post:
+      operationId: createAlert
+      tags: [alerts]
+      summary: Create a new price alert
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AlertInput"
+      responses:
+        "201":
+          description: Alert created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PriceAlert"
+
+  /alerts/triggered:
+    get:
+      operationId: getTriggeredAlerts
+      tags: [alerts]
+      summary: Get alerts that are currently firing based on live signals
+      responses:
+        "200":
+          description: Currently triggered alerts
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/TriggeredAlert"
+
+  /alerts/{id}:
+    delete:
+      operationId: deleteAlert
+      tags: [alerts]
+      summary: Delete an alert
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Alert deleted
+    patch:
+      operationId: toggleAlert
+      tags: [alerts]
+      summary: Enable or disable an alert
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AlertToggle"
+      responses:
+        "200":
+          description: Updated alert
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PriceAlert"
+
 components:
   schemas:
     HealthStatus:
@@ -435,3 +520,75 @@ components:
           enum: [crypto, forex, commodity]
         notes:
           type: ["string", "null"]
+
+    PriceAlert:
+      type: object
+      required: [id, symbol, market, direction, minConfidence, isActive, createdAt]
+      properties:
+        id:
+          type: integer
+        symbol:
+          type: string
+        market:
+          type: string
+          enum: [crypto, forex, commodity]
+        direction:
+          type: string
+          enum: [BUY, SELL, BOTH]
+        minConfidence:
+          type: integer
+          description: Minimum signal strength (0-100) to trigger
+        isActive:
+          type: boolean
+        createdAt:
+          type: string
+
+    AlertInput:
+      type: object
+      required: [symbol, market, direction]
+      properties:
+        symbol:
+          type: string
+        market:
+          type: string
+          enum: [crypto, forex, commodity]
+        direction:
+          type: string
+          enum: [BUY, SELL, BOTH]
+        minConfidence:
+          type: integer
+          description: Minimum confidence 0-100, defaults to 70
+
+    AlertToggle:
+      type: object
+      required: [isActive]
+      properties:
+        isActive:
+          type: boolean
+
+    TriggeredAlert:
+      type: object
+      required: [alertId, symbol, market, direction, strength, price, minConfidence]
+      properties:
+        alertId:
+          type: integer
+        symbol:
+          type: string
+        market:
+          type: string
+          enum: [crypto, forex, commodity]
+        direction:
+          type: string
+          enum: [BUY, SELL]
+        strength:
+          type: number
+        price:
+          type: number
+        entryPrice:
+          type: ["number", "null"]
+        stopLoss:
+          type: ["number", "null"]
+        takeProfit:
+          type: ["number", "null"]
+        minConfidence:
+          type: integer

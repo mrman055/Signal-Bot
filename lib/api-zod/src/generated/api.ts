@@ -195,3 +195,89 @@ export const RemoveFromWatchlistParams = zod.object({
 export const RemoveFromWatchlistResponse = zod.void()
 
 
+/**
+ * @summary Get all configured price alerts
+ */
+export const GetAlertsResponseItem = zod.object({
+  "id": zod.number(),
+  "symbol": zod.string(),
+  "market": zod.enum(['crypto', 'forex', 'commodity']),
+  "direction": zod.enum(['BUY', 'SELL', 'BOTH']),
+  "minConfidence": zod.number().describe('Minimum signal strength (0-100) to trigger'),
+  "isActive": zod.boolean(),
+  "createdAt": zod.string()
+})
+export const GetAlertsResponse = zod.array(GetAlertsResponseItem)
+
+
+/**
+ * @summary Create a new price alert
+ */
+export const CreateAlertBody = zod.object({
+  "symbol": zod.string(),
+  "market": zod.enum(['crypto', 'forex', 'commodity']),
+  "direction": zod.enum(['BUY', 'SELL', 'BOTH']),
+  "minConfidence": zod.number().optional().describe('Minimum confidence 0-100, defaults to 70')
+})
+
+export const CreateAlertResponse = zod.object({
+  "id": zod.number(),
+  "symbol": zod.string(),
+  "market": zod.enum(['crypto', 'forex', 'commodity']),
+  "direction": zod.enum(['BUY', 'SELL', 'BOTH']),
+  "minConfidence": zod.number().describe('Minimum signal strength (0-100) to trigger'),
+  "isActive": zod.boolean(),
+  "createdAt": zod.string()
+})
+
+
+/**
+ * @summary Get alerts that are currently firing based on live signals
+ */
+export const GetTriggeredAlertsResponseItem = zod.object({
+  "alertId": zod.number(),
+  "symbol": zod.string(),
+  "market": zod.enum(['crypto', 'forex', 'commodity']),
+  "direction": zod.enum(['BUY', 'SELL']),
+  "strength": zod.number(),
+  "price": zod.number(),
+  "entryPrice": zod.number().nullish(),
+  "stopLoss": zod.number().nullish(),
+  "takeProfit": zod.number().nullish(),
+  "minConfidence": zod.number()
+})
+export const GetTriggeredAlertsResponse = zod.array(GetTriggeredAlertsResponseItem)
+
+
+/**
+ * @summary Delete an alert
+ */
+export const DeleteAlertParams = zod.object({
+  "id": zod.coerce.number()
+})
+
+export const DeleteAlertResponse = zod.void()
+
+
+/**
+ * @summary Enable or disable an alert
+ */
+export const ToggleAlertParams = zod.object({
+  "id": zod.coerce.number()
+})
+
+export const ToggleAlertBody = zod.object({
+  "isActive": zod.boolean()
+})
+
+export const ToggleAlertResponse = zod.object({
+  "id": zod.number(),
+  "symbol": zod.string(),
+  "market": zod.enum(['crypto', 'forex', 'commodity']),
+  "direction": zod.enum(['BUY', 'SELL', 'BOTH']),
+  "minConfidence": zod.number().describe('Minimum signal strength (0-100) to trigger'),
+  "isActive": zod.boolean(),
+  "createdAt": zod.string()
+})
+
+

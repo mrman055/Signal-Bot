@@ -6,6 +6,7 @@ import recommendationRouter from "./recommendation.js";
 import monitorRouter from "./monitor.js";
 import watchlistRouter from "./watchlist.js";
 import analyticsRouter from "./analytics.js";
+import alertsRouter from "./alerts.js";
 
 const router: IRouter = Router();
 
@@ -16,5 +17,6 @@ router.use(pairsRouter);
 router.use(monitorRouter);
 router.use(watchlistRouter);
 router.use(analyticsRouter);
+router.use(alertsRouter);
 
 export default router;

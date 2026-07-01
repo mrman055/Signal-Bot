@@ -6,6 +6,10 @@
  * OpenAPI spec version: 0.1.0
  */
 
+export * from './alertInput';
+export * from './alertInputDirection';
+export * from './alertInputMarket';
+export * from './alertToggle';
 export * from './healthStatus';
 export * from './indicator';
 export * from './indicatorSignal';
@@ -18,6 +22,9 @@ export * from './monitorStatus';
 export * from './monitorStatusAlertLevel';
 export * from './pair';
 export * from './pairMarket';
+export * from './priceAlert';
+export * from './priceAlertDirection';
+export * from './priceAlertMarket';
 export * from './recommendation';
 export * from './recommendationDirection';
 export * from './recommendationMarket';
@@ -27,6 +34,9 @@ export * from './signalDetailDirection';
 export * from './signalDetailMarket';
 export * from './signalDirection';
 export * from './signalMarket';
+export * from './triggeredAlert';
+export * from './triggeredAlertDirection';
+export * from './triggeredAlertMarket';
 export * from './watchlistInput';
 export * from './watchlistInputMarket';
 export * from './watchlistItem';
