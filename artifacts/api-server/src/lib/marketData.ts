@@ -70,6 +70,10 @@ const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 type CandleCache = { candles: OHLCVCandle[]; fetchedAt: number; isLive: boolean };
 const candleCache: Map<string, CandleCache> = new Map();
 
+// Symbols that returned a permanent error (e.g. 404 — not available on this plan).
+// They use fallback candles and are never re-queued.
+const permanentFail: Set<string> = new Set();
+
 const LIVE_CACHE_TTL   = 10 * 60 * 1000;
 const FALLBACK_CACHE_TTL = 60 * 1000;
 
@@ -82,6 +86,8 @@ async function runFetchQueue(): Promise<void> {
 
   while (fetchQueue.length > 0) {
     const symbol = fetchQueue.shift()!;
+
+    if (permanentFail.has(symbol)) continue;
 
     const cached = candleCache.get(symbol);
     if (cached?.isLive && Date.now() - cached.fetchedAt < LIVE_CACHE_TTL) {
@@ -100,6 +106,17 @@ async function runFetchQueue(): Promise<void> {
         logger.warn({ symbol }, "Twelve Data rate limit hit — pausing 60s");
         fetchQueue.unshift(symbol);
         await sleep(61_000);
+        continue;
+      }
+
+      if (data.code === 404) {
+        // Symbol not available on this plan — mark as permanent fail, use fallback
+        logger.warn({ symbol, twelveDataSymbol: TRACKED_PAIRS.find(p => p.symbol === symbol)?.twelveDataSymbol }, "Twelve Data: symbol not available on this plan — using synthetic data");
+        permanentFail.add(symbol);
+        if (!candleCache.has(symbol)) {
+          candleCache.set(symbol, { candles: generateFallbackCandles(symbol), fetchedAt: Date.now(), isLive: false });
+        }
+        // Don't wait before next symbol — 404s are instant failures
         continue;
       }
 
@@ -139,6 +156,7 @@ async function runFetchQueue(): Promise<void> {
 
 function enqueueFetch(symbol: string): void {
   if (!API_KEY) return;
+  if (permanentFail.has(symbol)) return;
   if (!fetchQueue.includes(symbol)) fetchQueue.push(symbol);
   void runFetchQueue();
 }
