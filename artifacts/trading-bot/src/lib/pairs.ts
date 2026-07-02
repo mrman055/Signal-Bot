@@ -1,0 +1,17 @@
+export const TRACKED_PAIRS = [
+  { symbol: "XAU/USD", market: "commodity" as const },
+  { symbol: "XAG/USD", market: "commodity" as const },
+  { symbol: "WTI/USD", market: "commodity" as const },
+  { symbol: "EUR/USD", market: "forex" as const },
+  { symbol: "GBP/USD", market: "forex" as const },
+  { symbol: "USD/JPY", market: "forex" as const },
+  { symbol: "AUD/USD", market: "forex" as const },
+  { symbol: "USD/CAD", market: "forex" as const },
+  { symbol: "USD/CHF", market: "forex" as const },
+  { symbol: "NZD/USD", market: "forex" as const },
+  { symbol: "GBP/JPY", market: "forex" as const },
+  { symbol: "EUR/JPY", market: "forex" as const },
+  { symbol: "EUR/GBP", market: "forex" as const },
+  { symbol: "BTC/USD", market: "crypto" as const },
+  { symbol: "ETH/USD", market: "crypto" as const },
+];
