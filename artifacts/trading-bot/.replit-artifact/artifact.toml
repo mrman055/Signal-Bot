@@ -1,5 +1,13 @@
 kind = "web"
+<<<<<<< HEAD
 previewPath = "/trading-bot/"
+=======
+<<<<<<< HEAD
+previewPath = "/trading-bot/"
+=======
+previewPath = "/"
+>>>>>>> 27d569cd44bd6e7ad726fffd73ff4097f6683b52
+>>>>>>> 794c4ee6bcd6a708c73d5d1539900ef9d01d1f5e
 title = "Trading Signal Bot"
 version = "1.0.0"
 id = "artifacts/trading-bot"
@@ -11,7 +19,15 @@ version = "1.0.0"
 
 [[services]]
 name = "web"
+<<<<<<< HEAD
 paths = [ "/trading-bot/" ]
+=======
+<<<<<<< HEAD
+paths = [ "/trading-bot/" ]
+=======
+paths = [ "/" ]
+>>>>>>> 27d569cd44bd6e7ad726fffd73ff4097f6683b52
+>>>>>>> 794c4ee6bcd6a708c73d5d1539900ef9d01d1f5e
 localPort = 20883
 
 [services.development]
@@ -28,4 +44,12 @@ to = "/index.html"
 
 [services.env]
 PORT = "20883"
+<<<<<<< HEAD
 BASE_PATH = "/trading-bot/"
+=======
+<<<<<<< HEAD
+BASE_PATH = "/trading-bot/"
+=======
+BASE_PATH = "/"
+>>>>>>> 27d569cd44bd6e7ad726fffd73ff4097f6683b52
+>>>>>>> 794c4ee6bcd6a708c73d5d1539900ef9d01d1f5e

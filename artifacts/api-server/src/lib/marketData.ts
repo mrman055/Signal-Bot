@@ -10,16 +10,36 @@ export type PairConfig = {
 };
 
 export const TRACKED_PAIRS: PairConfig[] = [
+<<<<<<< HEAD
   // Commodities — most popular MT5 pairs
   { symbol: "XAU/USD",  market: "commodity", baseAsset: "XAU", quoteAsset: "USD", twelveDataSymbol: "XAU/USD" },
   { symbol: "XAG/USD",  market: "commodity", baseAsset: "XAG", quoteAsset: "USD", twelveDataSymbol: "XAG/USD" },
   { symbol: "WTI/USD",  market: "commodity", baseAsset: "WTI", quoteAsset: "USD", twelveDataSymbol: "WTI/USD" },
   // Major Forex pairs — all available on standard MT5 brokers
+=======
+<<<<<<< HEAD
+  // Commodities — most popular MT5 pairs
+  { symbol: "XAU/USD",  market: "commodity", baseAsset: "XAU", quoteAsset: "USD", twelveDataSymbol: "XAU/USD" },
+  { symbol: "XAG/USD",  market: "commodity", baseAsset: "XAG", quoteAsset: "USD", twelveDataSymbol: "XAG/USD" },
+  { symbol: "WTI/USD",  market: "commodity", baseAsset: "WTI", quoteAsset: "USD", twelveDataSymbol: "USOIL" },
+  // Major Forex pairs — all available on standard MT5 brokers
+=======
+  { symbol: "BTC/USD",  market: "crypto",    baseAsset: "BTC", quoteAsset: "USD", twelveDataSymbol: "BTC/USD" },
+  { symbol: "ETH/USD",  market: "crypto",    baseAsset: "ETH", quoteAsset: "USD", twelveDataSymbol: "ETH/USD" },
+  { symbol: "SOL/USD",  market: "crypto",    baseAsset: "SOL", quoteAsset: "USD", twelveDataSymbol: "SOL/USD" },
+  { symbol: "BNB/USD",  market: "crypto",    baseAsset: "BNB", quoteAsset: "USD", twelveDataSymbol: "BNB/USD" },
+  { symbol: "XRP/USD",  market: "crypto",    baseAsset: "XRP", quoteAsset: "USD", twelveDataSymbol: "XRP/USD" },
+>>>>>>> 27d569cd44bd6e7ad726fffd73ff4097f6683b52
+>>>>>>> 794c4ee6bcd6a708c73d5d1539900ef9d01d1f5e
   { symbol: "EUR/USD",  market: "forex",     baseAsset: "EUR", quoteAsset: "USD", twelveDataSymbol: "EUR/USD" },
   { symbol: "GBP/USD",  market: "forex",     baseAsset: "GBP", quoteAsset: "USD", twelveDataSymbol: "GBP/USD" },
   { symbol: "USD/JPY",  market: "forex",     baseAsset: "USD", quoteAsset: "JPY", twelveDataSymbol: "USD/JPY" },
   { symbol: "AUD/USD",  market: "forex",     baseAsset: "AUD", quoteAsset: "USD", twelveDataSymbol: "AUD/USD" },
   { symbol: "USD/CAD",  market: "forex",     baseAsset: "USD", quoteAsset: "CAD", twelveDataSymbol: "USD/CAD" },
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> 794c4ee6bcd6a708c73d5d1539900ef9d01d1f5e
   { symbol: "USD/CHF",  market: "forex",     baseAsset: "USD", quoteAsset: "CHF", twelveDataSymbol: "USD/CHF" },
   { symbol: "NZD/USD",  market: "forex",     baseAsset: "NZD", quoteAsset: "USD", twelveDataSymbol: "NZD/USD" },
   // Cross pairs — popular on MT5
@@ -31,6 +51,7 @@ export const TRACKED_PAIRS: PairConfig[] = [
   { symbol: "ETH/USD",  market: "crypto",    baseAsset: "ETH", quoteAsset: "USD", twelveDataSymbol: "ETH/USD" },
 ];
 
+<<<<<<< HEAD
 // ---------------------------------------------------------------------------
 // Proxy configuration — for symbols not on the current Twelve Data plan.
 // We fetch a freely-available proxy instrument (ETF that closely tracks the
@@ -89,6 +110,26 @@ const FALLBACK_PRICES: Record<string, number> = {
   "AUD/USD": 0.6380, "USD/CAD": 1.3750, "USD/CHF": 0.8920,
   "NZD/USD": 0.5920, "GBP/JPY": 184.40, "EUR/JPY": 157.50,
   "EUR/GBP": 0.8530, "BTC/USD": 107000, "ETH/USD": 2850,
+=======
+const FALLBACK_PRICES: Record<string, number> = {
+  "XAU/USD": 2338,   "XAG/USD": 29.45,  "WTI/USD": 79.8,
+  "EUR/USD": 1.0845, "GBP/USD": 1.2715, "USD/JPY": 157.45,
+  "AUD/USD": 0.6545, "USD/CAD": 1.3625, "USD/CHF": 0.9025,
+  "NZD/USD": 0.6015, "GBP/JPY": 198.50, "EUR/JPY": 170.20,
+  "EUR/GBP": 0.8515, "BTC/USD": 67500,  "ETH/USD": 3520,
+=======
+  { symbol: "XAU/USD",  market: "commodity", baseAsset: "XAU", quoteAsset: "USD", twelveDataSymbol: "XAU/USD" },
+  { symbol: "XAG/USD",  market: "commodity", baseAsset: "XAG", quoteAsset: "USD", twelveDataSymbol: "XAG/USD" },
+  { symbol: "WTI/USD",  market: "commodity", baseAsset: "WTI", quoteAsset: "USD", twelveDataSymbol: "USOIL" },
+];
+
+const FALLBACK_PRICES: Record<string, number> = {
+  "BTC/USD": 67500, "ETH/USD": 3520,  "SOL/USD": 155,  "BNB/USD": 605,
+  "XRP/USD": 0.635, "EUR/USD": 1.0845, "GBP/USD": 1.2715,"USD/JPY": 157.45,
+  "AUD/USD": 0.6545, "USD/CAD": 1.3625, "XAU/USD": 2338,  "XAG/USD": 29.45,
+  "WTI/USD": 79.8,
+>>>>>>> 27d569cd44bd6e7ad726fffd73ff4097f6683b52
+>>>>>>> 794c4ee6bcd6a708c73d5d1539900ef9d01d1f5e
 };
 
 const API_KEY = process.env.TWELVE_DATA_API_KEY;
@@ -116,6 +157,7 @@ async function fetchWithTimeout(url: string, timeoutMs = 10000): Promise<Respons
 
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
+<<<<<<< HEAD
 /** Parse a Twelve Data values array into sorted OHLCVCandle[]. */
 function parseTwelveDataCandles(values: TwelveDataCandle[]): OHLCVCandle[] {
   return values
@@ -154,10 +196,18 @@ const permanentFail: Set<string> = new Set();
 
 const LIVE_CACHE_TTL     = 10 * 60 * 1000;
 const FALLBACK_CACHE_TTL =  1 * 60 * 1000;
+=======
+type CandleCache = { candles: OHLCVCandle[]; fetchedAt: number; isLive: boolean };
+const candleCache: Map<string, CandleCache> = new Map();
+
+const LIVE_CACHE_TTL   = 10 * 60 * 1000;
+const FALLBACK_CACHE_TTL = 60 * 1000;
+>>>>>>> 794c4ee6bcd6a708c73d5d1539900ef9d01d1f5e
 
 let fetchQueue: string[] = [];
 let fetchInProgress = false;
 
+<<<<<<< HEAD
 type ProxyFetchResult = "ok" | "rate_limited" | "not_found" | "invalid_data" | "transient_error";
 
 /**
@@ -221,6 +271,8 @@ async function fetchProxyCandles(symbol: string, proxy: ProxyConfig): Promise<Pr
   }
 }
 
+=======
+>>>>>>> 794c4ee6bcd6a708c73d5d1539900ef9d01d1f5e
 async function runFetchQueue(): Promise<void> {
   if (fetchInProgress) return;
   fetchInProgress = true;
@@ -228,8 +280,11 @@ async function runFetchQueue(): Promise<void> {
   while (fetchQueue.length > 0) {
     const symbol = fetchQueue.shift()!;
 
+<<<<<<< HEAD
     if (permanentFail.has(symbol)) continue;
 
+=======
+>>>>>>> 794c4ee6bcd6a708c73d5d1539900ef9d01d1f5e
     const cached = candleCache.get(symbol);
     if (cached?.isLive && Date.now() - cached.fetchedAt < LIVE_CACHE_TTL) {
       continue;
@@ -241,7 +296,15 @@ async function runFetchQueue(): Promise<void> {
 
       const url = `${BASE_URL}/time_series?symbol=${encodeURIComponent(pair.twelveDataSymbol)}&interval=1h&outputsize=100&apikey=${API_KEY}`;
       const res = await fetchWithTimeout(url);
+<<<<<<< HEAD
       const data = await res.json() as TwelveDataTimeSeriesResponse;
+=======
+<<<<<<< HEAD
+      const data = await res.json() as TwelveDataTimeSeriesResponse;
+=======
+      const data: TwelveDataTimeSeriesResponse = await res.json();
+>>>>>>> 27d569cd44bd6e7ad726fffd73ff4097f6683b52
+>>>>>>> 794c4ee6bcd6a708c73d5d1539900ef9d01d1f5e
 
       if (data.code === 429) {
         logger.warn({ symbol }, "Twelve Data rate limit hit — pausing 60s");
@@ -250,6 +313,7 @@ async function runFetchQueue(): Promise<void> {
         continue;
       }
 
+<<<<<<< HEAD
       if (data.code === 404) {
         // Not on this plan — check for a proxy instrument first.
         const proxy = PROXY_MAP[symbol];
@@ -290,13 +354,30 @@ async function runFetchQueue(): Promise<void> {
         continue;
       }
 
+=======
+>>>>>>> 794c4ee6bcd6a708c73d5d1539900ef9d01d1f5e
       if (data.code || data.status === "error" || !data.values || data.values.length < 30) {
         logger.warn({ symbol, msg: data.message, code: data.code }, "Twelve Data error");
         if (!candleCache.has(symbol)) {
           candleCache.set(symbol, { candles: generateFallbackCandles(symbol), fetchedAt: Date.now(), isLive: false });
         }
       } else {
+<<<<<<< HEAD
         const candles = parseTwelveDataCandles(data.values);
+=======
+        const candles: OHLCVCandle[] = data.values
+          .map((v) => ({
+            time:   Math.floor(new Date(v.datetime).getTime() / 1000),
+            open:   parseFloat(v.open),
+            high:   parseFloat(v.high),
+            low:    parseFloat(v.low),
+            close:  parseFloat(v.close),
+            volume: parseFloat(v.volume) || 0,
+          }))
+          .filter((c) => !isNaN(c.open) && !isNaN(c.close))
+          .reverse();
+
+>>>>>>> 794c4ee6bcd6a708c73d5d1539900ef9d01d1f5e
         candleCache.set(symbol, { candles, fetchedAt: Date.now(), isLive: true });
         logger.info({ symbol }, "Live candles loaded from Twelve Data");
       }
@@ -315,7 +396,10 @@ async function runFetchQueue(): Promise<void> {
 
 function enqueueFetch(symbol: string): void {
   if (!API_KEY) return;
+<<<<<<< HEAD
   if (permanentFail.has(symbol)) return;
+=======
+>>>>>>> 794c4ee6bcd6a708c73d5d1539900ef9d01d1f5e
   if (!fetchQueue.includes(symbol)) fetchQueue.push(symbol);
   void runFetchQueue();
 }

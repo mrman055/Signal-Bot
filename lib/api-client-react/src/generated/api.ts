@@ -20,13 +20,25 @@ import type {
 } from '@tanstack/react-query';
 
 import type {
+<<<<<<< HEAD
   AlertInput,
   AlertToggle,
+=======
+<<<<<<< HEAD
+  AlertInput,
+  AlertToggle,
+=======
+>>>>>>> 27d569cd44bd6e7ad726fffd73ff4097f6683b52
+>>>>>>> 794c4ee6bcd6a708c73d5d1539900ef9d01d1f5e
   HealthStatus,
   ListSignalsParams,
   MonitorInput,
   MonitorStatus,
   Pair,
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> 794c4ee6bcd6a708c73d5d1539900ef9d01d1f5e
   PriceAlert,
   Recommendation,
   Signal,
@@ -34,6 +46,14 @@ import type {
   TriggeredAlert,
   WatchlistInput,
   WatchlistItem
+<<<<<<< HEAD
+=======
+=======
+  Recommendation,
+  Signal,
+  SignalDetail
+>>>>>>> 27d569cd44bd6e7ad726fffd73ff4097f6683b52
+>>>>>>> 794c4ee6bcd6a708c73d5d1539900ef9d01d1f5e
 } from './api.schemas';
 
 import { customFetch } from '../custom-fetch';
@@ -674,6 +694,10 @@ export function useGetPairs<TData = Awaited<ReturnType<typeof getPairs>>, TError
 
 
 
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> 794c4ee6bcd6a708c73d5d1539900ef9d01d1f5e
 export const getGetWatchlistUrl = () => {
 
 
@@ -1256,3 +1280,8 @@ export const useToggleAlert = <TError = ErrorType<unknown>,
       return useMutation(getToggleAlertMutationOptions(options));
     }
 
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> 27d569cd44bd6e7ad726fffd73ff4097f6683b52
+>>>>>>> 794c4ee6bcd6a708c73d5d1539900ef9d01d1f5e

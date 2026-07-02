@@ -1,6 +1,10 @@
 import { Router } from "express";
 import { getActiveMonitor, setActiveMonitor, clearActiveMonitor } from "../lib/monitorStore.js";
+<<<<<<< HEAD
 import { computeSignalDetail, signalCache } from "../lib/signalEngine.js";
+=======
+import { computeSignalDetail } from "../lib/signalEngine.js";
+>>>>>>> 794c4ee6bcd6a708c73d5d1539900ef9d01d1f5e
 import { getCachedCandles } from "../lib/marketData.js";
 
 const router = Router();
@@ -131,6 +135,7 @@ router.post("/monitor", async (req, res) => {
 
   setActiveMonitor(monitor);
 
+<<<<<<< HEAD
   // Use cached signal if available — avoid blocking the response on a
   // potentially slow candle fetch.  The GET /monitor endpoint will pick up
   // refreshed data on the next poll (every 15 s from the frontend).
@@ -139,6 +144,9 @@ router.post("/monitor", async (req, res) => {
 
   // Kick off a background refresh so the signal cache is fresh for the next poll.
   void computeSignalDetail(symbol);
+=======
+  const detail = await computeSignalDetail(symbol);
+>>>>>>> 794c4ee6bcd6a708c73d5d1539900ef9d01d1f5e
 
   return res.json({
     isActive: true,

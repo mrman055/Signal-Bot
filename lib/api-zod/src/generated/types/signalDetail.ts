@@ -5,7 +5,14 @@
  * Trading Signal Bot API
  * OpenAPI spec version: 0.1.0
  */
+<<<<<<< HEAD
 import type { Candle } from './candle';
+=======
+<<<<<<< HEAD
+import type { Candle } from './candle';
+=======
+>>>>>>> 27d569cd44bd6e7ad726fffd73ff4097f6683b52
+>>>>>>> 794c4ee6bcd6a708c73d5d1539900ef9d01d1f5e
 import type { Indicator } from './indicator';
 import type { SignalDetailDirection } from './signalDetailDirection';
 import type { SignalDetailMarket } from './signalDetailMarket';
@@ -27,5 +34,12 @@ export interface SignalDetail {
   takeProfit?: number | null;
   updatedAt: string;
   indicators: Indicator[];
+<<<<<<< HEAD
   candles?: Candle[];
+=======
+<<<<<<< HEAD
+  candles?: Candle[];
+=======
+>>>>>>> 27d569cd44bd6e7ad726fffd73ff4097f6683b52
+>>>>>>> 794c4ee6bcd6a708c73d5d1539900ef9d01d1f5e
 }

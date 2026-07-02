@@ -27,7 +27,15 @@ export interface MonitorStatus {
      */
   pnlPercent?: number | null;
   /**
+<<<<<<< HEAD
      * Non-null when you should close the trade now
+=======
+<<<<<<< HEAD
+     * Non-null when you should close the trade now
+=======
+     * Non-null when you should close the trade now — plain English reason
+>>>>>>> 27d569cd44bd6e7ad726fffd73ff4097f6683b52
+>>>>>>> 794c4ee6bcd6a708c73d5d1539900ef9d01d1f5e
      * @nullable
      */
   alert?: string | null;

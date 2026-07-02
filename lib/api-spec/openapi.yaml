@@ -16,8 +16,16 @@ tags:
     description: Market pair operations
   - name: monitor
     description: Active trade monitoring
+<<<<<<< HEAD
   - name: watchlist
     description: Watchlist operations
+=======
+<<<<<<< HEAD
+  - name: watchlist
+    description: Watchlist operations
+=======
+>>>>>>> 27d569cd44bd6e7ad726fffd73ff4097f6683b52
+>>>>>>> 794c4ee6bcd6a708c73d5d1539900ef9d01d1f5e
 paths:
   /healthz:
     get:
@@ -146,6 +154,10 @@ paths:
                 items:
                   $ref: "#/components/schemas/Pair"
 
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> 794c4ee6bcd6a708c73d5d1539900ef9d01d1f5e
   /watchlist:
     get:
       operationId: getWatchlist
@@ -278,6 +290,11 @@ paths:
               schema:
                 $ref: "#/components/schemas/PriceAlert"
 
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> 27d569cd44bd6e7ad726fffd73ff4097f6683b52
+>>>>>>> 794c4ee6bcd6a708c73d5d1539900ef9d01d1f5e
 components:
   schemas:
     HealthStatus:
@@ -416,6 +433,10 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/Indicator"
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> 794c4ee6bcd6a708c73d5d1539900ef9d01d1f5e
         candles:
           type: array
           items:
@@ -437,6 +458,11 @@ components:
           type: number
         volume:
           type: number
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> 27d569cd44bd6e7ad726fffd73ff4097f6683b52
+>>>>>>> 794c4ee6bcd6a708c73d5d1539900ef9d01d1f5e
 
     Indicator:
       type: object
@@ -491,7 +517,15 @@ components:
           description: Unrealised P&L as a percentage
         alert:
           type: ["string", "null"]
+<<<<<<< HEAD
           description: Non-null when you should close the trade now
+=======
+<<<<<<< HEAD
+          description: Non-null when you should close the trade now
+=======
+          description: Non-null when you should close the trade now — plain English reason
+>>>>>>> 27d569cd44bd6e7ad726fffd73ff4097f6683b52
+>>>>>>> 794c4ee6bcd6a708c73d5d1539900ef9d01d1f5e
         alertLevel:
           type: ["string", "null"]
           enum: [warning, danger, null]
@@ -513,6 +547,10 @@ components:
           type: string
         isActive:
           type: boolean
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> 794c4ee6bcd6a708c73d5d1539900ef9d01d1f5e
 
     WatchlistItem:
       type: object
@@ -613,3 +651,8 @@ components:
           type: ["number", "null"]
         minConfidence:
           type: integer
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> 27d569cd44bd6e7ad726fffd73ff4097f6683b52
+>>>>>>> 794c4ee6bcd6a708c73d5d1539900ef9d01d1f5e

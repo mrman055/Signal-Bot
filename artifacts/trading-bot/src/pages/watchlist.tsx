@@ -5,14 +5,35 @@ import {
   useAddToWatchlist,
   useRemoveFromWatchlist,
   WatchlistInputMarket,
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> 794c4ee6bcd6a708c73d5d1539900ef9d01d1f5e
   getGetWatchlistQueryKey
 } from "@workspace/api-client-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+<<<<<<< HEAD
+=======
+=======
+  WatchlistInput
+} from "@workspace/api-client-react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+>>>>>>> 27d569cd44bd6e7ad726fffd73ff4097f6683b52
+>>>>>>> 794c4ee6bcd6a708c73d5d1539900ef9d01d1f5e
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Trash2, Star, Plus } from "lucide-react";
 import { useQueryClient } from "@tanstack/react-query";
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+import { getGetWatchlistQueryKey } from "@workspace/api-client-react";
+>>>>>>> 27d569cd44bd6e7ad726fffd73ff4097f6683b52
+>>>>>>> 794c4ee6bcd6a708c73d5d1539900ef9d01d1f5e
 import { useToast } from "@/hooks/use-toast";
 
 export default function Watchlist() {
