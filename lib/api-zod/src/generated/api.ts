@@ -97,7 +97,6 @@ export const GetSignalBySymbolResponse = zod.object({
   "close": zod.number(),
   "volume": zod.number()
 })).optional()
-}))
 })
 
 

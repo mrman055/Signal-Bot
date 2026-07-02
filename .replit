@@ -21,3 +21,15 @@ timeoutMs = 20000
 [nix]
 channel = "stable-25_05"
 packages = ["nano"]
+
+[[workflows.workflow]]
+name = "Run"
+mode = "parallel"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "cd artifacts/api-server && PORT=3001 pnpm run dev"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "cd artifacts/trading-bot && PORT=3000 BASE_PATH=/ pnpm run dev"

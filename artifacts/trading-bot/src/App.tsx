@@ -4,12 +4,9 @@ import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import NotFound from "@/pages/not-found";
 import { Shell } from "@/components/layout/shell";
-
 import Dashboard from "@/pages/dashboard";
 import Signals from "@/pages/signals";
 import SignalDetail from "@/pages/signal-detail";
-import Watchlist from "@/pages/watchlist";
-import Alerts from "@/pages/alerts";
 import Watchlist from "@/pages/watchlist";
 import Alerts from "@/pages/alerts";
 
@@ -22,8 +19,6 @@ function Router() {
         <Route path="/" component={Dashboard} />
         <Route path="/signals" component={Signals} />
         <Route path="/signals/:symbol" component={SignalDetail} />
-        <Route path="/watchlist" component={Watchlist} />
-        <Route path="/alerts" component={Alerts} />
         <Route path="/watchlist" component={Watchlist} />
         <Route path="/alerts" component={Alerts} />
         <Route component={NotFound} />
