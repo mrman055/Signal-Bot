@@ -1,3 +1,7 @@
+<<<<<<< HEAD
+=======
+import { Badge } from "@/components/ui/badge";
+>>>>>>> 27d569cd44bd6e7ad726fffd73ff4097f6683b52
 import { Card, CardContent } from "@/components/ui/card";
 import { Signal, SignalDirection } from "@workspace/api-client-react";
 import { ArrowUpRight, ArrowDownRight, Minus } from "lucide-react";
@@ -25,7 +29,11 @@ export function SignalCard({ signal }: SignalCardProps) {
   };
 
   return (
+<<<<<<< HEAD
     <Link href={`/signals/${signal.symbol.replace(/\//g, '_')}`}>
+=======
+    <Link href={`/signals/${encodeURIComponent(signal.symbol)}`}>
+>>>>>>> 27d569cd44bd6e7ad726fffd73ff4097f6683b52
       <Card className="hover:border-primary/50 transition-colors cursor-pointer group bg-card overflow-hidden">
         <CardContent className="p-4">
           <div className="flex justify-between items-start mb-4">

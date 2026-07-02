@@ -17,7 +17,11 @@ export default function Signals() {
         <p className="text-muted-foreground">Scan the market for the best opportunities across all tracked assets.</p>
       </div>
 
+<<<<<<< HEAD
       <Tabs defaultValue="all" onValueChange={(v) => setMarket(v as "all" | "crypto" | "forex" | "commodity")}>
+=======
+      <Tabs defaultValue="all" onValueChange={(v) => setMarket(v as any)}>
+>>>>>>> 27d569cd44bd6e7ad726fffd73ff4097f6683b52
         <TabsList className="w-full justify-start rounded-none border-b border-border bg-transparent h-auto p-0 mb-8 space-x-6">
           <TabsTrigger value="all" className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent px-0 py-3 font-bold uppercase tracking-widest text-muted-foreground data-[state=active]:text-foreground">
             ALL
@@ -33,6 +37,7 @@ export default function Signals() {
           </TabsTrigger>
         </TabsList>
 
+<<<<<<< HEAD
         <TabsContent value={market} className="mt-0">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {isLoading ? (
@@ -50,6 +55,23 @@ export default function Signals() {
             )}
           </div>
         </TabsContent>
+=======
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {isLoading ? (
+            Array.from({ length: 6 }).map((_, i) => (
+              <div key={i} className="h-36 bg-card animate-pulse border border-border" />
+            ))
+          ) : signals && signals.length > 0 ? (
+            signals.map((signal) => (
+              <SignalCard key={signal.symbol} signal={signal} />
+            ))
+          ) : (
+            <div className="col-span-full py-24 text-center text-muted-foreground border border-border border-dashed">
+              No signals found for this market.
+            </div>
+          )}
+        </div>
+>>>>>>> 27d569cd44bd6e7ad726fffd73ff4097f6683b52
       </Tabs>
     </div>
   );

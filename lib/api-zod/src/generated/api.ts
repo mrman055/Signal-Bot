@@ -88,6 +88,7 @@ export const GetSignalBySymbolResponse = zod.object({
   "signal": zod.enum(['BUY', 'SELL', 'NEUTRAL']),
   "weight": zod.number(),
   "description": zod.string()
+<<<<<<< HEAD
 })),
   "candles": zod.array(zod.object({
   "time": zod.number(),
@@ -97,6 +98,9 @@ export const GetSignalBySymbolResponse = zod.object({
   "close": zod.number(),
   "volume": zod.number()
 })).optional()
+=======
+}))
+>>>>>>> 27d569cd44bd6e7ad726fffd73ff4097f6683b52
 })
 
 
@@ -113,7 +117,11 @@ export const GetMonitorResponse = zod.object({
   "currentStrength": zod.number().nullish(),
   "currentDirection": zod.string().nullish(),
   "pnlPercent": zod.number().nullish().describe('Unrealised P&L as a percentage'),
+<<<<<<< HEAD
   "alert": zod.string().nullish().describe('Non-null when you should close the trade now'),
+=======
+  "alert": zod.string().nullish().describe('Non-null when you should close the trade now — plain English reason'),
+>>>>>>> 27d569cd44bd6e7ad726fffd73ff4097f6683b52
   "alertLevel": zod.union([zod.literal('warning'),zod.literal('danger'),zod.literal(null)]).nullish(),
   "updatedAt": zod.string()
 })
@@ -137,7 +145,11 @@ export const StartMonitorResponse = zod.object({
   "currentStrength": zod.number().nullish(),
   "currentDirection": zod.string().nullish(),
   "pnlPercent": zod.number().nullish().describe('Unrealised P&L as a percentage'),
+<<<<<<< HEAD
   "alert": zod.string().nullish().describe('Non-null when you should close the trade now'),
+=======
+  "alert": zod.string().nullish().describe('Non-null when you should close the trade now — plain English reason'),
+>>>>>>> 27d569cd44bd6e7ad726fffd73ff4097f6683b52
   "alertLevel": zod.union([zod.literal('warning'),zod.literal('danger'),zod.literal(null)]).nullish(),
   "updatedAt": zod.string()
 })
@@ -162,6 +174,7 @@ export const GetPairsResponseItem = zod.object({
 export const GetPairsResponse = zod.array(GetPairsResponseItem)
 
 
+<<<<<<< HEAD
 /**
  * @summary Get the user's watchlist
  */
@@ -289,3 +302,5 @@ export const ToggleAlertResponse = zod.object({
 })
 
 
+=======
+>>>>>>> 27d569cd44bd6e7ad726fffd73ff4097f6683b52

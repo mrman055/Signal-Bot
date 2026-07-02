@@ -73,8 +73,11 @@
     "vite": "catalog:",
     "wouter": "^3.3.5",
     "zod": "catalog:"
+<<<<<<< HEAD
   },
   "dependencies": {
     "lightweight-charts": "^5.2.0"
+=======
+>>>>>>> 27d569cd44bd6e7ad726fffd73ff4097f6683b52
   }
 }

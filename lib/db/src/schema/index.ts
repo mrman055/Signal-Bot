@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 // Export your models here. Add one export per file
 // export * from "./posts";
 //
@@ -19,3 +20,6 @@
 
 export * from "./watchlist";
 export * from "./alerts";
+=======
+export * from "./watchlist";
+>>>>>>> 27d569cd44bd6e7ad726fffd73ff4097f6683b52

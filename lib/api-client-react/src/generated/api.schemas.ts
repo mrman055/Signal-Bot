@@ -118,6 +118,7 @@ export interface Indicator {
   description: string;
 }
 
+<<<<<<< HEAD
 export interface Candle {
   time: number;
   open: number;
@@ -127,6 +128,8 @@ export interface Candle {
   volume: number;
 }
 
+=======
+>>>>>>> 27d569cd44bd6e7ad726fffd73ff4097f6683b52
 export interface SignalDetail {
   symbol: string;
   market: SignalDetailMarket;
@@ -144,7 +147,10 @@ export interface SignalDetail {
   takeProfit?: number | null;
   updatedAt: string;
   indicators: Indicator[];
+<<<<<<< HEAD
   candles?: Candle[];
+=======
+>>>>>>> 27d569cd44bd6e7ad726fffd73ff4097f6683b52
 }
 
 export type MonitorInputDirection = typeof MonitorInputDirection[keyof typeof MonitorInputDirection];
@@ -192,7 +198,11 @@ export interface MonitorStatus {
      */
   pnlPercent?: number | null;
   /**
+<<<<<<< HEAD
      * Non-null when you should close the trade now
+=======
+     * Non-null when you should close the trade now — plain English reason
+>>>>>>> 27d569cd44bd6e7ad726fffd73ff4097f6683b52
      * @nullable
      */
   alert?: string | null;
@@ -218,6 +228,7 @@ export interface Pair {
   isActive: boolean;
 }
 
+<<<<<<< HEAD
 export type WatchlistItemMarket = typeof WatchlistItemMarket[keyof typeof WatchlistItemMarket];
 
 
@@ -344,6 +355,8 @@ export interface TriggeredAlert {
   minConfidence: number;
 }
 
+=======
+>>>>>>> 27d569cd44bd6e7ad726fffd73ff4097f6683b52
 export type ListSignalsParams = {
 market?: ListSignalsMarket;
 direction?: ListSignalsDirection;

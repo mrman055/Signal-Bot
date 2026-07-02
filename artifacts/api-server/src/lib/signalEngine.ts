@@ -45,6 +45,10 @@ export async function computeSignalDetail(symbol: string): Promise<ComputedSigna
 
   const cached = signalCache.get(symbol);
   const nowLive = isLiveData(symbol);
+<<<<<<< HEAD
+=======
+  // Bust cache if live data just arrived for the first time
+>>>>>>> 27d569cd44bd6e7ad726fffd73ff4097f6683b52
   const upgraded = nowLive && cached && !cached.wasLive;
   if (cached && !upgraded && Date.now() - cached.cachedAt < SIGNAL_TTL) {
     return cached.signal;

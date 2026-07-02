@@ -5,14 +5,26 @@ import {
   useAddToWatchlist,
   useRemoveFromWatchlist,
   WatchlistInputMarket,
+<<<<<<< HEAD
   getGetWatchlistQueryKey
 } from "@workspace/api-client-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+=======
+  WatchlistInput
+} from "@workspace/api-client-react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+>>>>>>> 27d569cd44bd6e7ad726fffd73ff4097f6683b52
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Trash2, Star, Plus } from "lucide-react";
 import { useQueryClient } from "@tanstack/react-query";
+<<<<<<< HEAD
+=======
+import { getGetWatchlistQueryKey } from "@workspace/api-client-react";
+>>>>>>> 27d569cd44bd6e7ad726fffd73ff4097f6683b52
 import { useToast } from "@/hooks/use-toast";
 
 export default function Watchlist() {

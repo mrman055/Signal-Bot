@@ -1,4 +1,5 @@
 import { Link, useLocation } from "wouter";
+<<<<<<< HEAD
 import { useRef, useEffect } from "react";
 import {
   Activity,
@@ -12,12 +13,24 @@ import {
 import { Button } from "@/components/ui/button";
 import { useGetTriggeredAlerts, getGetTriggeredAlertsQueryKey } from "@workspace/api-client-react";
 import { useToast } from "@/hooks/use-toast";
+=======
+import { 
+  Activity, 
+  LayoutDashboard, 
+  Star,
+  Settings,
+  Menu,
+  Bell
+} from "lucide-react";
+import { Button } from "@/components/ui/button";
+>>>>>>> 27d569cd44bd6e7ad726fffd73ff4097f6683b52
 
 interface ShellProps {
   children: React.ReactNode;
 }
 
 export function Shell({ children }: ShellProps) {
+<<<<<<< HEAD
   const [location, navigate] = useLocation();
   const { toast } = useToast();
   const prevTriggeredIds = useRef<Set<number>>(new Set());
@@ -51,6 +64,13 @@ export function Shell({ children }: ShellProps) {
     { href: "/signals", icon: TrendingUp, label: "Signals" },
     { href: "/watchlist", icon: Star, label: "Watchlist" },
     { href: "/alerts", icon: Bell, label: "Alerts", badge: triggeredCount },
+=======
+  const [location] = useLocation();
+
+  const navItems = [
+    { href: "/", icon: LayoutDashboard, label: "Dashboard" },
+    { href: "/watchlist", icon: Star, label: "Watchlist" },
+>>>>>>> 27d569cd44bd6e7ad726fffd73ff4097f6683b52
   ];
 
   return (
@@ -61,6 +81,7 @@ export function Shell({ children }: ShellProps) {
           <Activity className="h-6 w-6 text-primary" />
           <span className="font-bold text-lg tracking-tight uppercase">SignalBot</span>
         </div>
+<<<<<<< HEAD
 
         <nav className="flex-1 overflow-y-auto p-4 space-y-1">
           {navItems.map((item) => {
@@ -92,6 +113,26 @@ export function Shell({ children }: ShellProps) {
           })}
         </nav>
 
+=======
+        
+        <nav className="flex-1 overflow-y-auto p-4 space-y-1">
+          {navItems.map((item) => (
+            <Link key={item.href} href={item.href}>
+              <span
+                className={`flex items-center gap-3 px-3 py-2.5 rounded-md text-sm transition-colors cursor-pointer ${
+                  location === item.href || (location.startsWith("/signals") && item.href === "/")
+                    ? "bg-accent text-accent-foreground font-medium"
+                    : "text-muted-foreground hover:bg-muted hover:text-foreground"
+                }`}
+              >
+                <item.icon className="h-4 w-4" />
+                {item.label}
+              </span>
+            </Link>
+          ))}
+        </nav>
+        
+>>>>>>> 27d569cd44bd6e7ad726fffd73ff4097f6683b52
         <div className="p-4 border-t border-border">
           <Button variant="ghost" className="w-full justify-start gap-2 text-muted-foreground hover:text-foreground">
             <Settings className="h-4 w-4" />
@@ -116,6 +157,7 @@ export function Shell({ children }: ShellProps) {
         {/* Topbar - Desktop */}
         <header className="hidden md:flex items-center justify-between px-6 py-3 border-b border-border bg-background">
           <div className="flex items-center gap-4">
+<<<<<<< HEAD
             <span className="text-sm text-muted-foreground uppercase tracking-wider font-mono">
               System Status: <span className="text-primary">Online</span>
             </span>
@@ -133,6 +175,13 @@ export function Shell({ children }: ShellProps) {
                   {triggeredCount}
                 </span>
               )}
+=======
+            <span className="text-sm text-muted-foreground uppercase tracking-wider font-mono">System Status: <span className="text-primary">Online</span></span>
+          </div>
+          <div className="flex items-center gap-4">
+            <Button variant="ghost" size="icon" className="text-muted-foreground hover:text-foreground">
+              <Bell className="h-4 w-4" />
+>>>>>>> 27d569cd44bd6e7ad726fffd73ff4097f6683b52
             </Button>
             <div className="h-8 w-8 rounded-full bg-secondary border border-border flex items-center justify-center text-xs font-medium">
               TR
@@ -140,7 +189,13 @@ export function Shell({ children }: ShellProps) {
           </div>
         </header>
 
+<<<<<<< HEAD
         <main className="flex-1 overflow-y-auto p-4 md:p-6 lg:p-8">{children}</main>
+=======
+        <main className="flex-1 overflow-y-auto p-4 md:p-6 lg:p-8">
+          {children}
+        </main>
+>>>>>>> 27d569cd44bd6e7ad726fffd73ff4097f6683b52
       </div>
     </div>
   );

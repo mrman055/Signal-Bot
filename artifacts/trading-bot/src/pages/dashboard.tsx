@@ -12,7 +12,11 @@ import {
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+<<<<<<< HEAD
 import { Activity, ShieldAlert, Crosshair, ChevronRight, Target } from "lucide-react";
+=======
+import { ArrowUpRight, ArrowDownRight, AlertTriangle, Target, Activity, ShieldAlert, Crosshair, ChevronRight } from "lucide-react";
+>>>>>>> 27d569cd44bd6e7ad726fffd73ff4097f6683b52
 import { SignalCard } from "@/components/ui/signal-card";
 import { Link } from "wouter";
 import { useToast } from "@/hooks/use-toast";
@@ -22,7 +26,11 @@ export default function Dashboard() {
   const { toast } = useToast();
 
   const { data: recommendation, isLoading: loadingRec } = useGetRecommendation({
+<<<<<<< HEAD
     query: { refetchInterval: 30000, queryKey: ["/api/recommendation"] }
+=======
+    query: { refetchInterval: 30000 }
+>>>>>>> 27d569cd44bd6e7ad726fffd73ff4097f6683b52
   });
 
   const { data: monitor, isLoading: loadingMonitor } = useGetMonitor({
@@ -70,7 +78,11 @@ export default function Dashboard() {
   };
 
   const handleStopMonitor = () => {
+<<<<<<< HEAD
     stopMonitorMutation.mutate();
+=======
+    stopMonitorMutation.mutate({});
+>>>>>>> 27d569cd44bd6e7ad726fffd73ff4097f6683b52
   };
 
   const otherSignals = signals?.filter(s => s.symbol !== recommendation?.symbol).slice(0, 4) || [];
@@ -78,7 +90,11 @@ export default function Dashboard() {
   return (
     <div className="space-y-12 pb-12">
       
+<<<<<<< HEAD
       {/* TOP RECOMMENDATION */}
+=======
+      {/* 1. TOP RECOMMENDATION */}
+>>>>>>> 27d569cd44bd6e7ad726fffd73ff4097f6683b52
       <section>
         <h2 className="text-sm font-bold text-muted-foreground uppercase tracking-widest mb-4">Trade Now</h2>
         
@@ -88,7 +104,12 @@ export default function Dashboard() {
           </div>
         ) : recommendation ? (
           <div className="border-4 border-border bg-card overflow-hidden">
+<<<<<<< HEAD
             <div className="p-8 md:p-12">
+=======
+            <div className={`p-8 md:p-12 ${recommendation.direction === 'BUY' ? 'bg-[hsl(var(--buy))/0.05]' : 'bg-[hsl(var(--sell))/0.05]'}`}>
+              
+>>>>>>> 27d569cd44bd6e7ad726fffd73ff4097f6683b52
               <div className="flex flex-col md:flex-row md:items-start justify-between gap-6 mb-8">
                 <div>
                   <div className="flex items-center gap-3 mb-2">
@@ -105,8 +126,13 @@ export default function Dashboard() {
                   <div className="flex items-center gap-4">
                     <div className={`text-2xl md:text-3xl font-black uppercase tracking-tighter px-4 py-2 border-2
                       ${recommendation.direction === 'BUY' 
+<<<<<<< HEAD
                         ? 'text-green-400 border-green-400' 
                         : 'text-red-500 border-red-500'}`}
+=======
+                        ? 'text-[hsl(var(--buy))] border-[hsl(var(--buy))]' 
+                        : 'text-[hsl(var(--sell))] border-[hsl(var(--sell))]'}`}
+>>>>>>> 27d569cd44bd6e7ad726fffd73ff4097f6683b52
                     >
                       {recommendation.direction}
                     </div>
@@ -121,7 +147,11 @@ export default function Dashboard() {
                   <div className="text-4xl font-black mb-2">{recommendation.strength}%</div>
                   <div className="h-2 w-full bg-secondary overflow-hidden">
                     <div 
+<<<<<<< HEAD
                       className={`h-full ${recommendation.direction === 'BUY' ? 'bg-green-400' : 'bg-red-500'}`}
+=======
+                      className={`h-full ${recommendation.direction === 'BUY' ? 'bg-[hsl(var(--buy))]' : 'bg-[hsl(var(--sell))]'}`}
+>>>>>>> 27d569cd44bd6e7ad726fffd73ff4097f6683b52
                       style={{ width: `${recommendation.strength}%` }}
                     />
                   </div>
@@ -139,6 +169,7 @@ export default function Dashboard() {
                   <div className="text-sm font-bold uppercase tracking-widest text-muted-foreground mb-1 flex items-center gap-2">
                     <Target className="w-4 h-4" /> Entry
                   </div>
+<<<<<<< HEAD
                   <div className="font-mono text-xl">{recommendation.entryPrice ?? "-"}</div>
                 </div>
                 <div className="bg-red-950/20 border border-red-500/20 p-4">
@@ -152,6 +183,21 @@ export default function Dashboard() {
                     <Crosshair className="w-4 h-4" /> Take Profit
                   </div>
                   <div className="font-mono text-xl text-green-400">{recommendation.takeProfit ?? "-"}</div>
+=======
+                  <div className="font-mono text-xl">{recommendation.entryPrice || "-"}</div>
+                </div>
+                <div className="bg-[hsl(var(--sell))/0.05] border border-[hsl(var(--sell))/0.2] p-4">
+                  <div className="text-sm font-bold uppercase tracking-widest text-[hsl(var(--sell))] mb-1 flex items-center gap-2">
+                    <ShieldAlert className="w-4 h-4" /> Stop Loss
+                  </div>
+                  <div className="font-mono text-xl text-[hsl(var(--sell))]">{recommendation.stopLoss || "-"}</div>
+                </div>
+                <div className="bg-[hsl(var(--buy))/0.05] border border-[hsl(var(--buy))/0.2] p-4">
+                  <div className="text-sm font-bold uppercase tracking-widest text-[hsl(var(--buy))] mb-1 flex items-center gap-2">
+                    <Crosshair className="w-4 h-4" /> Take Profit
+                  </div>
+                  <div className="font-mono text-xl text-[hsl(var(--buy))]">{recommendation.takeProfit || "-"}</div>
+>>>>>>> 27d569cd44bd6e7ad726fffd73ff4097f6683b52
                 </div>
               </div>
 
@@ -160,15 +206,24 @@ export default function Dashboard() {
                   size="lg" 
                   className={`w-full md:w-auto text-lg font-black uppercase tracking-widest h-16 px-8
                     ${recommendation.direction === 'BUY' 
+<<<<<<< HEAD
                       ? 'bg-green-500 hover:bg-green-400 text-black' 
                       : 'bg-red-500 hover:bg-red-400 text-white'}`}
+=======
+                      ? 'bg-[hsl(var(--buy))] hover:bg-[hsl(var(--buy))/0.8] text-black' 
+                      : 'bg-[hsl(var(--sell))] hover:bg-[hsl(var(--sell))/0.8] text-white'}`}
+>>>>>>> 27d569cd44bd6e7ad726fffd73ff4097f6683b52
                   onClick={() => {
                     setEntryPrice(recommendation.price.toString());
                     setShowMonitorForm(true);
                   }}
                   disabled={monitor?.isActive}
                 >
+<<<<<<< HEAD
                   I&apos;m Trading This
+=======
+                  I'm Trading This
+>>>>>>> 27d569cd44bd6e7ad726fffd73ff4097f6683b52
                 </Button>
               ) : (
                 <form onSubmit={handleStartMonitor} className="bg-background border border-border p-6 flex flex-col md:flex-row gap-4 items-end">
@@ -211,13 +266,18 @@ export default function Dashboard() {
         )}
       </section>
 
+<<<<<<< HEAD
       {/* ACTIVE TRADE MONITOR */}
+=======
+      {/* 2. ACTIVE TRADE MONITOR */}
+>>>>>>> 27d569cd44bd6e7ad726fffd73ff4097f6683b52
       {monitor?.isActive && (
         <section>
           <h2 className="text-sm font-bold text-muted-foreground uppercase tracking-widest mb-4">Active Trade</h2>
           
           <div className={`border-4 p-6 md:p-8 relative overflow-hidden
             ${monitor.alertLevel === 'danger' 
+<<<<<<< HEAD
               ? 'border-red-500 bg-red-950/20' 
               : monitor.alertLevel === 'warning'
                 ? 'border-yellow-500 bg-yellow-500/10'
@@ -226,16 +286,34 @@ export default function Dashboard() {
           >
             {monitor.alertLevel === 'danger' && (
               <div className="absolute top-0 left-0 w-full bg-red-500 text-white text-center font-black uppercase tracking-widest py-1 text-sm">
+=======
+              ? 'border-[hsl(var(--sell))] bg-[hsl(var(--sell))/0.1] animate-pulse-fast' 
+              : monitor.alertLevel === 'warning'
+                ? 'border-yellow-500 bg-yellow-500/10'
+                : 'border-[hsl(var(--buy))] bg-[hsl(var(--buy))/0.05]'
+            }`}
+          >
+            {monitor.alertLevel === 'danger' && (
+              <div className="absolute top-0 left-0 w-full bg-[hsl(var(--sell))] text-white text-center font-black uppercase tracking-widest py-1 text-sm">
+>>>>>>> 27d569cd44bd6e7ad726fffd73ff4097f6683b52
                 Action Required
               </div>
             )}
             
+<<<<<<< HEAD
             <div className={`flex flex-col md:flex-row justify-between items-start md:items-center gap-6 ${monitor.alertLevel === 'danger' ? 'mt-6' : ''}`}>
+=======
+            <div className={`flex flex-col md:flex-row justify-between items-start md:items-center gap-6 ${monitor.alertLevel === 'danger' ? 'mt-4' : ''}`}>
+>>>>>>> 27d569cd44bd6e7ad726fffd73ff4097f6683b52
               <div>
                 <div className="flex items-center gap-3 mb-2">
                   <span className="text-2xl font-black tracking-tight">{monitor.symbol}</span>
                   <span className={`px-2 py-0.5 text-xs font-bold uppercase tracking-widest border
+<<<<<<< HEAD
                     ${monitor.direction === 'BUY' ? 'text-green-400 border-green-400/50' : 'text-red-400 border-red-400/50'}`}
+=======
+                    ${monitor.direction === 'BUY' ? 'text-[hsl(var(--buy))] border-[hsl(var(--buy))/0.5]' : 'text-[hsl(var(--sell))] border-[hsl(var(--sell))/0.5]'}`}
+>>>>>>> 27d569cd44bd6e7ad726fffd73ff4097f6683b52
                   >
                     {monitor.direction}
                   </span>
@@ -243,12 +321,20 @@ export default function Dashboard() {
                 
                 {monitor.alert ? (
                   <p className={`text-lg md:text-2xl font-black mt-2 max-w-xl
+<<<<<<< HEAD
                     ${monitor.alertLevel === 'danger' ? 'text-red-400' : 'text-yellow-400'}`}
+=======
+                    ${monitor.alertLevel === 'danger' ? 'text-[hsl(var(--sell))]' : 'text-yellow-500'}`}
+>>>>>>> 27d569cd44bd6e7ad726fffd73ff4097f6683b52
                   >
                     {monitor.alert}
                   </p>
                 ) : (
+<<<<<<< HEAD
                   <p className="text-lg font-bold text-green-400 mt-2 flex items-center gap-2">
+=======
+                  <p className="text-lg font-bold text-[hsl(var(--buy))] mt-2 flex items-center gap-2">
+>>>>>>> 27d569cd44bd6e7ad726fffd73ff4097f6683b52
                     <Activity className="w-5 h-5" /> Your trade is on track
                   </p>
                 )}
@@ -258,7 +344,11 @@ export default function Dashboard() {
                 <div>
                   <div className="text-xs font-bold uppercase tracking-widest text-muted-foreground mb-1">P&L</div>
                   <div className={`font-mono text-2xl font-black
+<<<<<<< HEAD
                     ${(monitor.pnlPercent || 0) >= 0 ? 'text-green-400' : 'text-red-400'}`}
+=======
+                    ${(monitor.pnlPercent || 0) >= 0 ? 'text-[hsl(var(--buy))]' : 'text-[hsl(var(--sell))]'}`}
+>>>>>>> 27d569cd44bd6e7ad726fffd73ff4097f6683b52
                   >
                     {(monitor.pnlPercent || 0) >= 0 ? "+" : ""}{(monitor.pnlPercent || 0).toFixed(2)}%
                   </div>
@@ -289,7 +379,11 @@ export default function Dashboard() {
         </section>
       )}
 
+<<<<<<< HEAD
       {/* OTHER SIGNALS */}
+=======
+      {/* 3. OTHER SIGNALS */}
+>>>>>>> 27d569cd44bd6e7ad726fffd73ff4097f6683b52
       <section>
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-sm font-bold text-muted-foreground uppercase tracking-widest">Other Opportunities</h2>

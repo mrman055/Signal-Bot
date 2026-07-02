@@ -400,10 +400,13 @@ importers:
         version: 3.25.76
 
   artifacts/trading-bot:
+<<<<<<< HEAD
     dependencies:
       lightweight-charts:
         specifier: ^5.2.0
         version: 5.2.0
+=======
+>>>>>>> 27d569cd44bd6e7ad726fffd73ff4097f6683b52
     devDependencies:
       '@hookform/resolvers':
         specifier: ^3.10.0

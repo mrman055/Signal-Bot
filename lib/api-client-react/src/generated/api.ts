@@ -20,13 +20,17 @@ import type {
 } from '@tanstack/react-query';
 
 import type {
+<<<<<<< HEAD
   AlertInput,
   AlertToggle,
+=======
+>>>>>>> 27d569cd44bd6e7ad726fffd73ff4097f6683b52
   HealthStatus,
   ListSignalsParams,
   MonitorInput,
   MonitorStatus,
   Pair,
+<<<<<<< HEAD
   PriceAlert,
   Recommendation,
   Signal,
@@ -34,6 +38,11 @@ import type {
   TriggeredAlert,
   WatchlistInput,
   WatchlistItem
+=======
+  Recommendation,
+  Signal,
+  SignalDetail
+>>>>>>> 27d569cd44bd6e7ad726fffd73ff4097f6683b52
 } from './api.schemas';
 
 import { customFetch } from '../custom-fetch';
@@ -674,6 +683,7 @@ export function useGetPairs<TData = Awaited<ReturnType<typeof getPairs>>, TError
 
 
 
+<<<<<<< HEAD
 export const getGetWatchlistUrl = () => {
 
 
@@ -1256,3 +1266,5 @@ export const useToggleAlert = <TError = ErrorType<unknown>,
       return useMutation(getToggleAlertMutationOptions(options));
     }
 
+=======
+>>>>>>> 27d569cd44bd6e7ad726fffd73ff4097f6683b52
