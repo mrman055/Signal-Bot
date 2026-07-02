@@ -5,24 +5,14 @@ import { cva, type VariantProps } from "class-variance-authority"
 import { cn } from "@/lib/utils"
 
 const buttonVariants = cva(
-<<<<<<< HEAD
   "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
-=======
-<<<<<<< HEAD
   "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
-=======
   "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0" +
 " hover-elevate active-elevate-2",
->>>>>>> 27d569cd44bd6e7ad726fffd73ff4097f6683b52
->>>>>>> 794c4ee6bcd6a708c73d5d1539900ef9d01d1f5e
   {
     variants: {
       variant: {
         default:
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
->>>>>>> 794c4ee6bcd6a708c73d5d1539900ef9d01d1f5e
           "bg-primary text-primary-foreground shadow hover:bg-primary/90",
         destructive:
           "bg-destructive text-destructive-foreground shadow-sm hover:bg-destructive/90",
@@ -37,9 +27,6 @@ const buttonVariants = cva(
         default: "h-9 px-4 py-2",
         sm: "h-8 rounded-md px-3 text-xs",
         lg: "h-10 rounded-md px-8",
-<<<<<<< HEAD
-=======
-=======
            // @replit: no hover, and add primary border
            "bg-primary text-primary-foreground border border-primary-border",
         destructive:
@@ -61,8 +48,6 @@ const buttonVariants = cva(
         default: "min-h-9 px-4 py-2",
         sm: "min-h-8 rounded-md px-3 text-xs",
         lg: "min-h-10 rounded-md px-8",
->>>>>>> 27d569cd44bd6e7ad726fffd73ff4097f6683b52
->>>>>>> 794c4ee6bcd6a708c73d5d1539900ef9d01d1f5e
         icon: "h-9 w-9",
       },
     },

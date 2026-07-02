@@ -6,20 +6,11 @@
  * OpenAPI spec version: 0.1.0
  */
 
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
->>>>>>> 794c4ee6bcd6a708c73d5d1539900ef9d01d1f5e
 export * from './alertInput';
 export * from './alertInputDirection';
 export * from './alertInputMarket';
 export * from './alertToggle';
 export * from './candle';
-<<<<<<< HEAD
-=======
-=======
->>>>>>> 27d569cd44bd6e7ad726fffd73ff4097f6683b52
->>>>>>> 794c4ee6bcd6a708c73d5d1539900ef9d01d1f5e
 export * from './healthStatus';
 export * from './indicator';
 export * from './indicatorSignal';
@@ -32,18 +23,12 @@ export * from './monitorStatus';
 export * from './monitorStatusAlertLevel';
 export * from './pair';
 export * from './pairMarket';
-<<<<<<< HEAD
 export * from './priceAlert';
 export * from './priceAlertDirection';
 export * from './priceAlertMarket';
-=======
-<<<<<<< HEAD
 export * from './priceAlert';
 export * from './priceAlertDirection';
 export * from './priceAlertMarket';
-=======
->>>>>>> 27d569cd44bd6e7ad726fffd73ff4097f6683b52
->>>>>>> 794c4ee6bcd6a708c73d5d1539900ef9d01d1f5e
 export * from './recommendation';
 export * from './recommendationDirection';
 export * from './recommendationMarket';
@@ -53,10 +38,6 @@ export * from './signalDetailDirection';
 export * from './signalDetailMarket';
 export * from './signalDirection';
 export * from './signalMarket';
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
->>>>>>> 794c4ee6bcd6a708c73d5d1539900ef9d01d1f5e
 export * from './triggeredAlert';
 export * from './triggeredAlertDirection';
 export * from './triggeredAlertMarket';
@@ -64,8 +45,3 @@ export * from './watchlistInput';
 export * from './watchlistInputMarket';
 export * from './watchlistItem';
 export * from './watchlistItemMarket';
-<<<<<<< HEAD
-=======
-=======
->>>>>>> 27d569cd44bd6e7ad726fffd73ff4097f6683b52
->>>>>>> 794c4ee6bcd6a708c73d5d1539900ef9d01d1f5e

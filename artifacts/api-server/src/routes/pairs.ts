@@ -14,29 +14,13 @@ router.get("/pairs", (_req, res) => {
   return res.json(pairs);
 });
 
-<<<<<<< HEAD
 router.get("/pairs/:symbol/candles", async (req, res) => {
-=======
-<<<<<<< HEAD
-router.get("/pairs/:symbol/candles", async (req, res) => {
-=======
-router.get("/pairs/:symbol/candles", (req, res) => {
->>>>>>> 27d569cd44bd6e7ad726fffd73ff4097f6683b52
->>>>>>> 794c4ee6bcd6a708c73d5d1539900ef9d01d1f5e
   const symbol = decodeURIComponent(req.params.symbol);
   const pair = TRACKED_PAIRS.find((p) => p.symbol === symbol);
   if (!pair) {
     return res.status(404).json({ error: "Symbol not found" });
   }
-<<<<<<< HEAD
   const candles = await getCachedCandles(symbol);
-=======
-<<<<<<< HEAD
-  const candles = await getCachedCandles(symbol);
-=======
-  const candles = getCachedCandles(symbol);
->>>>>>> 27d569cd44bd6e7ad726fffd73ff4097f6683b52
->>>>>>> 794c4ee6bcd6a708c73d5d1539900ef9d01d1f5e
   return res.json(candles);
 });
 

@@ -1,20 +1,10 @@
-<<<<<<< HEAD
 import { useEffect, useState, useRef } from "react";
-=======
-<<<<<<< HEAD
 import { useEffect, useState, useRef } from "react";
-=======
->>>>>>> 27d569cd44bd6e7ad726fffd73ff4097f6683b52
->>>>>>> 794c4ee6bcd6a708c73d5d1539900ef9d01d1f5e
 import { useRoute } from "wouter";
 import { useGetSignalBySymbol, getGetSignalBySymbolQueryKey } from "@workspace/api-client-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
->>>>>>> 794c4ee6bcd6a708c73d5d1539900ef9d01d1f5e
 import { ArrowLeft, ArrowUpRight, ArrowDownRight, Minus, AlertTriangle, Target, Activity, Radio, RefreshCw } from "lucide-react";
 import { Link } from "wouter";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -94,9 +84,6 @@ export default function SignalDetail() {
     return undefined;
   }, [signal?.price]);
 
-<<<<<<< HEAD
-=======
-=======
 import { ArrowLeft, ArrowUpRight, ArrowDownRight, Minus, AlertTriangle, Target, Activity } from "lucide-react";
 import { Link } from "wouter";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -113,23 +100,15 @@ export default function SignalDetail() {
     }
   });
 
->>>>>>> 27d569cd44bd6e7ad726fffd73ff4097f6683b52
->>>>>>> 794c4ee6bcd6a708c73d5d1539900ef9d01d1f5e
   if (isLoading) {
     return (
       <div className="space-y-6 max-w-5xl mx-auto">
         <Skeleton className="h-10 w-48" />
-<<<<<<< HEAD
         <Skeleton className="h-56 w-full" />
         <Skeleton className="h-96 w-full" />
-=======
-<<<<<<< HEAD
         <Skeleton className="h-56 w-full" />
         <Skeleton className="h-96 w-full" />
-=======
         <Skeleton className="h-48 w-full" />
->>>>>>> 27d569cd44bd6e7ad726fffd73ff4097f6683b52
->>>>>>> 794c4ee6bcd6a708c73d5d1539900ef9d01d1f5e
         <Skeleton className="h-64 w-full" />
       </div>
     );
@@ -143,10 +122,6 @@ export default function SignalDetail() {
   const isSell = signal.direction === "SELL";
 
   const directionColorClass = isBuy
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
->>>>>>> 794c4ee6bcd6a708c73d5d1539900ef9d01d1f5e
     ? "text-emerald-400 border-emerald-500/30 bg-emerald-500/10"
     : isSell
     ? "text-red-400 border-red-500/30 bg-red-500/10"
@@ -170,9 +145,6 @@ export default function SignalDetail() {
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-4">
           <Link href="/signals">
-<<<<<<< HEAD
-=======
-=======
     ? "text-primary border-primary/20 bg-primary/10"
     : isSell
     ? "text-destructive border-destructive/20 bg-destructive/10"
@@ -183,17 +155,11 @@ export default function SignalDetail() {
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-4">
           <Link href="/">
->>>>>>> 27d569cd44bd6e7ad726fffd73ff4097f6683b52
->>>>>>> 794c4ee6bcd6a708c73d5d1539900ef9d01d1f5e
             <Button variant="outline" size="icon" className="h-8 w-8 rounded-full">
               <ArrowLeft className="h-4 w-4" />
             </Button>
           </Link>
           <div>
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
->>>>>>> 794c4ee6bcd6a708c73d5d1539900ef9d01d1f5e
             <div className="flex items-center gap-3">
               <h1 className="text-3xl font-black tracking-tight">{signal.symbol}</h1>
               <LiveBadge />
@@ -296,9 +262,6 @@ export default function SignalDetail() {
           <CardHeader className="pb-3 border-b border-border py-3 px-5">
             <CardTitle className="text-sm font-bold uppercase tracking-widest flex items-center gap-2">
               <Target className="w-4 h-4 text-primary" />
-<<<<<<< HEAD
-=======
-=======
             <h1 className="text-3xl font-bold tracking-tight">{signal.symbol}</h1>
             <p className="text-sm text-muted-foreground uppercase tracking-widest">
               {signal.market} • {signal.timeframe || "1H"}
@@ -366,17 +329,11 @@ export default function SignalDetail() {
           <CardHeader className="pb-3 border-b border-border">
             <CardTitle className="text-lg flex items-center gap-2">
               <Target className="w-5 h-5 text-primary" />
->>>>>>> 27d569cd44bd6e7ad726fffd73ff4097f6683b52
->>>>>>> 794c4ee6bcd6a708c73d5d1539900ef9d01d1f5e
               Trading Targets
             </CardTitle>
           </CardHeader>
           <CardContent className="p-0">
             <div className="grid grid-cols-1 md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-border">
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
->>>>>>> 794c4ee6bcd6a708c73d5d1539900ef9d01d1f5e
               <div className="p-5 relative overflow-hidden">
                 <div className="absolute left-0 top-0 h-full w-1 bg-blue-500/50" />
                 <span className="text-xs text-muted-foreground uppercase tracking-wider block mb-1">Entry Target</span>
@@ -405,9 +362,6 @@ export default function SignalDetail() {
                     R:R {(Math.abs(signal.takeProfit - signal.entryPrice) / Math.abs(signal.stopLoss - signal.entryPrice)).toFixed(1)}:1
                   </span>
                 )}
-<<<<<<< HEAD
-=======
-=======
               <div className="p-6 flex justify-between items-center md:flex-col md:items-start md:justify-center">
                 <span className="text-sm text-muted-foreground uppercase tracking-wider md:mb-2">Entry Target</span>
                 <span className="text-xl font-bold font-mono">{signal.entryPrice ?? "-"}</span>
@@ -425,42 +379,27 @@ export default function SignalDetail() {
                   <Target className="w-4 h-4" /> Take Profit
                 </span>
                 <span className="text-xl font-bold font-mono text-primary">{signal.takeProfit ?? "-"}</span>
->>>>>>> 27d569cd44bd6e7ad726fffd73ff4097f6683b52
->>>>>>> 794c4ee6bcd6a708c73d5d1539900ef9d01d1f5e
               </div>
             </div>
           </CardContent>
         </Card>
       )}
 
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
->>>>>>> 794c4ee6bcd6a708c73d5d1539900ef9d01d1f5e
       {/* Indicator Analysis */}
       <Card className="bg-card border-border">
         <CardHeader className="border-b border-border py-3 px-5">
           <CardTitle className="text-sm font-bold uppercase tracking-widest flex items-center gap-2">
             <Activity className="w-4 h-4 text-primary" />
             Indicator Breakdown
-<<<<<<< HEAD
-=======
-=======
       <Card className="bg-card">
         <CardHeader className="border-b border-border">
           <CardTitle className="text-lg flex items-center gap-2">
             <Activity className="w-5 h-5 text-primary" />
             Indicator Analysis
->>>>>>> 27d569cd44bd6e7ad726fffd73ff4097f6683b52
->>>>>>> 794c4ee6bcd6a708c73d5d1539900ef9d01d1f5e
           </CardTitle>
         </CardHeader>
         <CardContent className="p-0">
           <div className="divide-y divide-border">
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
->>>>>>> 794c4ee6bcd6a708c73d5d1539900ef9d01d1f5e
             {signal.indicators.map((ind, i) => {
               const isUp = ind.signal === "BUY";
               const isDown = ind.signal === "SELL";
@@ -501,9 +440,6 @@ export default function SignalDetail() {
         </span>
         <span className="font-mono">Last fetch: {lastUpdated}</span>
       </div>
-<<<<<<< HEAD
-=======
-=======
             {signal.indicators.map((ind, i) => (
               <div key={i} className="p-4 flex items-center justify-between hover:bg-secondary/50 transition-colors">
                 <div className="flex-1">
@@ -525,8 +461,6 @@ export default function SignalDetail() {
           </div>
         </CardContent>
       </Card>
->>>>>>> 27d569cd44bd6e7ad726fffd73ff4097f6683b52
->>>>>>> 794c4ee6bcd6a708c73d5d1539900ef9d01d1f5e
     </div>
   );
 }

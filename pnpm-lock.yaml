@@ -400,19 +400,10 @@ importers:
         version: 3.25.76
 
   artifacts/trading-bot:
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
->>>>>>> 794c4ee6bcd6a708c73d5d1539900ef9d01d1f5e
     dependencies:
       lightweight-charts:
         specifier: ^5.2.0
         version: 5.2.0
-<<<<<<< HEAD
-=======
-=======
->>>>>>> 27d569cd44bd6e7ad726fffd73ff4097f6683b52
->>>>>>> 794c4ee6bcd6a708c73d5d1539900ef9d01d1f5e
     devDependencies:
       '@hookform/resolvers':
         specifier: ^3.10.0
@@ -572,11 +563,8 @@ importers:
         version: 7.80.0(react@19.1.0)
       react-icons:
         specifier: ^5.4.0
-<<<<<<< HEAD
         version: 5.7.0(react@19.1.0)
-=======
         version: 5.6.0(react@19.1.0)
->>>>>>> 794c4ee6bcd6a708c73d5d1539900ef9d01d1f5e
       react-resizable-panels:
         specifier: ^2.1.7
         version: 2.1.9(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
@@ -2711,13 +2699,10 @@ packages:
     peerDependencies:
       react: ^16.8.0 || ^17 || ^18 || ^19
 
-<<<<<<< HEAD
   react-icons@5.7.0:
     resolution: {integrity: sha512-LBLy340Rzqy6+/yVhZKT3B/QpP1BZaesGqasf09HPOBzRarcDIFH0WwXlXQfE7q7ipxK4MSiC5DIBWURCny6fw==}
-=======
   react-icons@5.6.0:
     resolution: {integrity: sha512-RH93p5ki6LfOiIt0UtDyNg/cee+HLVR6cHHtW3wALfo+eOHTp8RnU2kRkI6E+H19zMIs03DyxUG/GfZMOGvmiA==}
->>>>>>> 794c4ee6bcd6a708c73d5d1539900ef9d01d1f5e
     peerDependencies:
       react: '*'
 
@@ -5252,11 +5237,8 @@ snapshots:
     dependencies:
       react: 19.1.0
 
-<<<<<<< HEAD
   react-icons@5.7.0(react@19.1.0):
-=======
   react-icons@5.6.0(react@19.1.0):
->>>>>>> 794c4ee6bcd6a708c73d5d1539900ef9d01d1f5e
     dependencies:
       react: 19.1.0
 

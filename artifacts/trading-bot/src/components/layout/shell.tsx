@@ -1,8 +1,4 @@
 import { Link, useLocation } from "wouter";
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
->>>>>>> 794c4ee6bcd6a708c73d5d1539900ef9d01d1f5e
 import { useRef, useEffect } from "react";
 import {
   Activity,
@@ -16,9 +12,6 @@ import {
 import { Button } from "@/components/ui/button";
 import { useGetTriggeredAlerts, getGetTriggeredAlertsQueryKey } from "@workspace/api-client-react";
 import { useToast } from "@/hooks/use-toast";
-<<<<<<< HEAD
-=======
-=======
 import { 
   Activity, 
   LayoutDashboard, 
@@ -28,18 +21,12 @@ import {
   Bell
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
->>>>>>> 27d569cd44bd6e7ad726fffd73ff4097f6683b52
->>>>>>> 794c4ee6bcd6a708c73d5d1539900ef9d01d1f5e
 
 interface ShellProps {
   children: React.ReactNode;
 }
 
 export function Shell({ children }: ShellProps) {
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
->>>>>>> 794c4ee6bcd6a708c73d5d1539900ef9d01d1f5e
   const [location, navigate] = useLocation();
   const { toast } = useToast();
   const prevTriggeredIds = useRef<Set<number>>(new Set());
@@ -73,16 +60,11 @@ export function Shell({ children }: ShellProps) {
     { href: "/signals", icon: TrendingUp, label: "Signals" },
     { href: "/watchlist", icon: Star, label: "Watchlist" },
     { href: "/alerts", icon: Bell, label: "Alerts", badge: triggeredCount },
-<<<<<<< HEAD
-=======
-=======
   const [location] = useLocation();
 
   const navItems = [
     { href: "/", icon: LayoutDashboard, label: "Dashboard" },
     { href: "/watchlist", icon: Star, label: "Watchlist" },
->>>>>>> 27d569cd44bd6e7ad726fffd73ff4097f6683b52
->>>>>>> 794c4ee6bcd6a708c73d5d1539900ef9d01d1f5e
   ];
 
   return (
@@ -93,10 +75,6 @@ export function Shell({ children }: ShellProps) {
           <Activity className="h-6 w-6 text-primary" />
           <span className="font-bold text-lg tracking-tight uppercase">SignalBot</span>
         </div>
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
->>>>>>> 794c4ee6bcd6a708c73d5d1539900ef9d01d1f5e
 
         <nav className="flex-1 overflow-y-auto p-4 space-y-1">
           {navItems.map((item) => {
@@ -128,9 +106,6 @@ export function Shell({ children }: ShellProps) {
           })}
         </nav>
 
-<<<<<<< HEAD
-=======
-=======
         
         <nav className="flex-1 overflow-y-auto p-4 space-y-1">
           {navItems.map((item) => (
@@ -149,8 +124,6 @@ export function Shell({ children }: ShellProps) {
           ))}
         </nav>
         
->>>>>>> 27d569cd44bd6e7ad726fffd73ff4097f6683b52
->>>>>>> 794c4ee6bcd6a708c73d5d1539900ef9d01d1f5e
         <div className="p-4 border-t border-border">
           <Button variant="ghost" className="w-full justify-start gap-2 text-muted-foreground hover:text-foreground">
             <Settings className="h-4 w-4" />
@@ -175,10 +148,6 @@ export function Shell({ children }: ShellProps) {
         {/* Topbar - Desktop */}
         <header className="hidden md:flex items-center justify-between px-6 py-3 border-b border-border bg-background">
           <div className="flex items-center gap-4">
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
->>>>>>> 794c4ee6bcd6a708c73d5d1539900ef9d01d1f5e
             <span className="text-sm text-muted-foreground uppercase tracking-wider font-mono">
               System Status: <span className="text-primary">Online</span>
             </span>
@@ -196,16 +165,11 @@ export function Shell({ children }: ShellProps) {
                   {triggeredCount}
                 </span>
               )}
-<<<<<<< HEAD
-=======
-=======
             <span className="text-sm text-muted-foreground uppercase tracking-wider font-mono">System Status: <span className="text-primary">Online</span></span>
           </div>
           <div className="flex items-center gap-4">
             <Button variant="ghost" size="icon" className="text-muted-foreground hover:text-foreground">
               <Bell className="h-4 w-4" />
->>>>>>> 27d569cd44bd6e7ad726fffd73ff4097f6683b52
->>>>>>> 794c4ee6bcd6a708c73d5d1539900ef9d01d1f5e
             </Button>
             <div className="h-8 w-8 rounded-full bg-secondary border border-border flex items-center justify-center text-xs font-medium">
               TR
@@ -213,17 +177,11 @@ export function Shell({ children }: ShellProps) {
           </div>
         </header>
 
-<<<<<<< HEAD
         <main className="flex-1 overflow-y-auto p-4 md:p-6 lg:p-8">{children}</main>
-=======
-<<<<<<< HEAD
         <main className="flex-1 overflow-y-auto p-4 md:p-6 lg:p-8">{children}</main>
-=======
         <main className="flex-1 overflow-y-auto p-4 md:p-6 lg:p-8">
           {children}
         </main>
->>>>>>> 27d569cd44bd6e7ad726fffd73ff4097f6683b52
->>>>>>> 794c4ee6bcd6a708c73d5d1539900ef9d01d1f5e
       </div>
     </div>
   );

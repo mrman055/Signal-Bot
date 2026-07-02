@@ -88,10 +88,6 @@ export const GetSignalBySymbolResponse = zod.object({
   "signal": zod.enum(['BUY', 'SELL', 'NEUTRAL']),
   "weight": zod.number(),
   "description": zod.string()
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
->>>>>>> 794c4ee6bcd6a708c73d5d1539900ef9d01d1f5e
 })),
   "candles": zod.array(zod.object({
   "time": zod.number(),
@@ -101,12 +97,7 @@ export const GetSignalBySymbolResponse = zod.object({
   "close": zod.number(),
   "volume": zod.number()
 })).optional()
-<<<<<<< HEAD
-=======
-=======
 }))
->>>>>>> 27d569cd44bd6e7ad726fffd73ff4097f6683b52
->>>>>>> 794c4ee6bcd6a708c73d5d1539900ef9d01d1f5e
 })
 
 
@@ -123,15 +114,9 @@ export const GetMonitorResponse = zod.object({
   "currentStrength": zod.number().nullish(),
   "currentDirection": zod.string().nullish(),
   "pnlPercent": zod.number().nullish().describe('Unrealised P&L as a percentage'),
-<<<<<<< HEAD
   "alert": zod.string().nullish().describe('Non-null when you should close the trade now'),
-=======
-<<<<<<< HEAD
   "alert": zod.string().nullish().describe('Non-null when you should close the trade now'),
-=======
   "alert": zod.string().nullish().describe('Non-null when you should close the trade now — plain English reason'),
->>>>>>> 27d569cd44bd6e7ad726fffd73ff4097f6683b52
->>>>>>> 794c4ee6bcd6a708c73d5d1539900ef9d01d1f5e
   "alertLevel": zod.union([zod.literal('warning'),zod.literal('danger'),zod.literal(null)]).nullish(),
   "updatedAt": zod.string()
 })
@@ -155,15 +140,9 @@ export const StartMonitorResponse = zod.object({
   "currentStrength": zod.number().nullish(),
   "currentDirection": zod.string().nullish(),
   "pnlPercent": zod.number().nullish().describe('Unrealised P&L as a percentage'),
-<<<<<<< HEAD
   "alert": zod.string().nullish().describe('Non-null when you should close the trade now'),
-=======
-<<<<<<< HEAD
   "alert": zod.string().nullish().describe('Non-null when you should close the trade now'),
-=======
   "alert": zod.string().nullish().describe('Non-null when you should close the trade now — plain English reason'),
->>>>>>> 27d569cd44bd6e7ad726fffd73ff4097f6683b52
->>>>>>> 794c4ee6bcd6a708c73d5d1539900ef9d01d1f5e
   "alertLevel": zod.union([zod.literal('warning'),zod.literal('danger'),zod.literal(null)]).nullish(),
   "updatedAt": zod.string()
 })
@@ -188,10 +167,6 @@ export const GetPairsResponseItem = zod.object({
 export const GetPairsResponse = zod.array(GetPairsResponseItem)
 
 
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
->>>>>>> 794c4ee6bcd6a708c73d5d1539900ef9d01d1f5e
 /**
  * @summary Get the user's watchlist
  */
@@ -319,8 +294,3 @@ export const ToggleAlertResponse = zod.object({
 })
 
 
-<<<<<<< HEAD
-=======
-=======
->>>>>>> 27d569cd44bd6e7ad726fffd73ff4097f6683b52
->>>>>>> 794c4ee6bcd6a708c73d5d1539900ef9d01d1f5e
