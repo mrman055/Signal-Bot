@@ -36,11 +36,8 @@ export type ComputedSignalDetail = ComputedSignal & {
   }[];
 };
 
-<<<<<<< HEAD
 export const signalCache: Map<string, { signal: ComputedSignalDetail; cachedAt: number; wasLive: boolean }> = new Map();
-=======
-const signalCache: Map<string, { signal: ComputedSignalDetail; cachedAt: number; wasLive: boolean }> = new Map();
->>>>>>> 794c4ee6bcd6a708c73d5d1539900ef9d01d1f5e
+
 const SIGNAL_TTL = 5 * 60 * 1000;
 
 export async function computeSignalDetail(symbol: string): Promise<ComputedSignalDetail | null> {
@@ -49,14 +46,8 @@ export async function computeSignalDetail(symbol: string): Promise<ComputedSigna
 
   const cached = signalCache.get(symbol);
   const nowLive = isLiveData(symbol);
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
-=======
-  // Bust cache if live data just arrived for the first time
->>>>>>> 27d569cd44bd6e7ad726fffd73ff4097f6683b52
->>>>>>> 794c4ee6bcd6a708c73d5d1539900ef9d01d1f5e
   const upgraded = nowLive && cached && !cached.wasLive;
+
   if (cached && !upgraded && Date.now() - cached.cachedAt < SIGNAL_TTL) {
     return cached.signal;
   }
