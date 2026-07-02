@@ -31,12 +31,15 @@ export const TRACKED_PAIRS: PairConfig[] = [
   { symbol: "ETH/USD",  market: "crypto",    baseAsset: "ETH", quoteAsset: "USD", twelveDataSymbol: "ETH/USD" },
 ];
 
+// Fallback prices used when no TWELVE_DATA_API_KEY is set.
+// Update these periodically to keep simulated signals realistic.
+// Last updated: July 2026
 const FALLBACK_PRICES: Record<string, number> = {
-  "XAU/USD": 2338,   "XAG/USD": 29.45,  "WTI/USD": 79.8,
-  "EUR/USD": 1.0845, "GBP/USD": 1.2715, "USD/JPY": 157.45,
-  "AUD/USD": 0.6545, "USD/CAD": 1.3625, "USD/CHF": 0.9025,
-  "NZD/USD": 0.6015, "GBP/JPY": 198.50, "EUR/JPY": 170.20,
-  "EUR/GBP": 0.8515, "BTC/USD": 67500,  "ETH/USD": 3520,
+  "XAU/USD": 4069.0, "XAG/USD": 32.50,  "WTI/USD": 67.0,
+  "EUR/USD": 1.0820, "GBP/USD": 1.2680, "USD/JPY": 145.50,
+  "AUD/USD": 0.6380, "USD/CAD": 1.3750, "USD/CHF": 0.8920,
+  "NZD/USD": 0.5920, "GBP/JPY": 184.40, "EUR/JPY": 157.50,
+  "EUR/GBP": 0.8530, "BTC/USD": 107000, "ETH/USD": 2850,
 };
 
 const API_KEY = process.env.TWELVE_DATA_API_KEY;
