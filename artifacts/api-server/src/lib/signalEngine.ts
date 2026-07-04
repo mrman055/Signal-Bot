@@ -38,7 +38,7 @@ export type ComputedSignalDetail = ComputedSignal & {
 
 export const signalCache: Map<string, { signal: ComputedSignalDetail; cachedAt: number; wasLive: boolean }> = new Map();
 
-const SIGNAL_TTL = 5 * 60 * 1000;
+const SIGNAL_TTL = 30 * 1000;
 
 export async function computeSignalDetail(symbol: string): Promise<ComputedSignalDetail | null> {
   const pair = TRACKED_PAIRS.find((p) => p.symbol === symbol);

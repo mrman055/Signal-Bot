@@ -26,8 +26,6 @@ export function SignalCard({ signal }: SignalCardProps) {
   };
 
   return (
-    <Link href={`/signals/${signal.symbol.replace(/\//g, '_')}`}>
-    <Link href={`/signals/${signal.symbol.replace(/\//g, '_')}`}>
     <Link href={`/signals/${encodeURIComponent(signal.symbol)}`}>
       <Card className="hover:border-primary/50 transition-colors cursor-pointer group bg-card overflow-hidden">
         <CardContent className="p-4">
@@ -43,7 +41,6 @@ export function SignalCard({ signal }: SignalCardProps) {
               {signal.direction}
             </div>
           </div>
-
           <div className="flex justify-between items-end mb-4 font-mono">
             <div>
               <p className="text-xs text-muted-foreground mb-1">Price</p>
@@ -56,16 +53,15 @@ export function SignalCard({ signal }: SignalCardProps) {
               </p>
             </div>
           </div>
-
           <div className="space-y-1.5">
             <div className="flex justify-between text-xs font-mono">
               <span className="text-muted-foreground">Confidence</span>
               <span className={signal.strength >= 80 ? "text-primary" : ""}>{signal.strength}%</span>
             </div>
             <div className="h-1.5 w-full bg-secondary rounded-full overflow-hidden">
-              <div 
-                className={`h-full ${getStrengthBarColor()} transition-all`} 
-                style={{ width: `${signal.strength}%` }} 
+              <div
+                className={`h-full ${getStrengthBarColor()} transition-all`}
+                style={{ width: `${signal.strength}%` }}
               />
             </div>
           </div>

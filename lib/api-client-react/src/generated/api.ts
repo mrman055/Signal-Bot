@@ -17,11 +17,8 @@ import type {
   UseMutationResult,
   UseQueryOptions,
   UseQueryResult
-} from '@tanstack/react-query';
-
-import type {
-  AlertInput,
-  AlertToggle,
+} from "@tanstack/react-query";
+import {
   AlertInput,
   AlertToggle,
   HealthStatus,
@@ -36,9 +33,6 @@ import type {
   TriggeredAlert,
   WatchlistInput,
   WatchlistItem
-  Recommendation,
-  Signal,
-  SignalDetail
 } from './api.schemas';
 
 import { customFetch } from '../custom-fetch';

@@ -1,35 +1,35 @@
 modules = ["nodejs-24", "postgresql-16"]
 
-[deployment]
-router = "application"
-deploymentTarget = "autoscale"
-
-[deployment.postBuild]
-args = ["pnpm", "store", "prune"]
-env = { "CI" = "true" }
-
-[workflows]
+[nix]
+channel = "stable-25_05"
+packages = ["nano"]
 
 [agent]
 stack = "PNPM_WORKSPACE"
 expertMode = true
 
-[postMerge]
-path = "scripts/post-merge.sh"
-timeoutMs = 20000
-
-[nix]
-channel = "stable-25_05"
-packages = ["nano"]
+[workflows]
+runButton = "Start App"
 
 [[workflows.workflow]]
-name = "Run"
+name = "Start App"
 mode = "parallel"
+author = "agent"
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
 args = "cd artifacts/api-server && PORT=3001 pnpm run dev"
+waitForPort = 3001
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
 args = "cd artifacts/trading-bot && PORT=3000 BASE_PATH=/ pnpm run dev"
+waitForPort = 3000
+
+[[ports]]
+localPort = 3000
+externalPort = 80
+
+[[ports]]
+localPort = 3001
+externalPort = 3001

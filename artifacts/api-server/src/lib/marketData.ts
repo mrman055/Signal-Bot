@@ -12,8 +12,7 @@ export type PairConfig = {
 export const TRACKED_PAIRS: PairConfig[] = [
   // Commodities
   { symbol: "XAU/USD", market: "commodity", baseAsset: "XAU", quoteAsset: "USD", twelveDataSymbol: "XAU/USD" },
-  { symbol: "XAG/USD", market: "commodity", baseAsset: "XAG", quoteAsset: "USD", twelveDataSymbol: "XAG/USD" },
-  { symbol: "WTI/USD", market: "commodity", baseAsset: "WTI", quoteAsset: "USD", twelveDataSymbol: "USOIL" },
+  { symbol: "BTC/USD", market: "crypto", baseAsset: "BTC", quoteAsset: "USD", twelveDataSymbol: "BTC/USD" },
   // Major Forex
   { symbol: "EUR/USD", market: "forex", baseAsset: "EUR", quoteAsset: "USD", twelveDataSymbol: "EUR/USD" },
   { symbol: "GBP/USD", market: "forex", baseAsset: "GBP", quoteAsset: "USD", twelveDataSymbol: "GBP/USD" },
@@ -30,8 +29,7 @@ export const TRACKED_PAIRS: PairConfig[] = [
 
 const FALLBACK_PRICES: Record<string, number> = {
   "XAU/USD": 3350.0,
-  "XAG/USD": 32.50,
-  "WTI/USD": 72.0,
+  "BTC/USD": 107000,
   "EUR/USD": 1.0820,
   "GBP/USD": 1.2680,
   "USD/JPY": 145.50,
@@ -86,7 +84,7 @@ function parseTwelveDataCandles(values: TwelveDataCandle[]): OHLCVCandle[] {
 type CandleCache = { candles: OHLCVCandle[]; fetchedAt: number; isLive: boolean };
 const candleCache: Map<string, CandleCache> = new Map();
 
-const LIVE_CACHE_TTL     = 10 * 60 * 1000;
+const LIVE_CACHE_TTL = 60 * 1000;
 const FALLBACK_CACHE_TTL =  1 * 60 * 1000;
 
 let fetchQueue: string[] = [];
@@ -105,7 +103,7 @@ async function runFetchQueue(): Promise<void> {
       const pair = TRACKED_PAIRS.find((p) => p.symbol === symbol);
       if (!pair) continue;
 
-      const url = `${BASE_URL}/time_series?symbol=${encodeURIComponent(pair.twelveDataSymbol)}&interval=1h&outputsize=100&apikey=${API_KEY}`;
+      const url = `${BASE_URL}/time_series?symbol=${encodeURIComponent(pair.twelveDataSymbol)}&interval=1min&outputsize=100&apikey=${API_KEY}`;
       const res = await fetchWithTimeout(url);
       const data = await res.json() as TwelveDataTimeSeriesResponse;
 

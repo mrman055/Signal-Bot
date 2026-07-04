@@ -13,8 +13,6 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Activity, ShieldAlert, Crosshair, ChevronRight, Target } from "lucide-react";
-import { Activity, ShieldAlert, Crosshair, ChevronRight, Target } from "lucide-react";
-import { ArrowUpRight, ArrowDownRight, AlertTriangle, Target, Activity, ShieldAlert, Crosshair, ChevronRight } from "lucide-react";
 import { SignalCard } from "@/components/ui/signal-card";
 import { Link } from "wouter";
 import { useToast } from "@/hooks/use-toast";
@@ -25,8 +23,6 @@ export default function Dashboard() {
 
   const { data: recommendation, isLoading: loadingRec } = useGetRecommendation({
     query: { refetchInterval: 30000, queryKey: ["/api/recommendation"] }
-    query: { refetchInterval: 30000, queryKey: ["/api/recommendation"] }
-    query: { refetchInterval: 30000 }
   });
 
   const { data: monitor, isLoading: loadingMonitor } = useGetMonitor({
@@ -85,8 +81,6 @@ export default function Dashboard() {
     <div className="space-y-12 pb-12">
       
       {/* TOP RECOMMENDATION */}
-      {/* TOP RECOMMENDATION */}
-      {/* 1. TOP RECOMMENDATION */}
       <section>
         <h2 className="text-sm font-bold text-muted-foreground uppercase tracking-widest mb-4">Trade Now</h2>
         
@@ -97,8 +91,6 @@ export default function Dashboard() {
         ) : recommendation ? (
           <div className="border-4 border-border bg-card overflow-hidden">
             <div className="p-8 md:p-12">
-            <div className="p-8 md:p-12">
-            <div className={`p-8 md:p-12 ${recommendation.direction === 'BUY' ? 'bg-[hsl(var(--buy))/0.05]' : 'bg-[hsl(var(--sell))/0.05]'}`}>
               
               <div className="flex flex-col md:flex-row md:items-start justify-between gap-6 mb-8">
                 <div>
@@ -118,10 +110,6 @@ export default function Dashboard() {
                       ${recommendation.direction === 'BUY' 
                         ? 'text-green-400 border-green-400' 
                         : 'text-red-500 border-red-500'}`}
-                        ? 'text-green-400 border-green-400' 
-                        : 'text-red-500 border-red-500'}`}
-                        ? 'text-[hsl(var(--buy))] border-[hsl(var(--buy))]' 
-                        : 'text-[hsl(var(--sell))] border-[hsl(var(--sell))]'}`}
                     >
                       {recommendation.direction}
                     </div>
@@ -136,7 +124,6 @@ export default function Dashboard() {
                   <div className="text-4xl font-black mb-2">{recommendation.strength}%</div>
                   <div className="h-2 w-full bg-secondary overflow-hidden">
                     <div 
-                      className={`h-full ${recommendation.direction === 'BUY' ? 'bg-green-400' : 'bg-red-500'}`}
                       className={`h-full ${recommendation.direction === 'BUY' ? 'bg-green-400' : 'bg-red-500'}`}
                       className={`h-full ${recommendation.direction === 'BUY' ? 'bg-[hsl(var(--buy))]' : 'bg-[hsl(var(--sell))]'}`}
                       style={{ width: `${recommendation.strength}%` }}
@@ -169,19 +156,6 @@ export default function Dashboard() {
                     <Crosshair className="w-4 h-4" /> Take Profit
                   </div>
                   <div className="font-mono text-xl text-green-400">{recommendation.takeProfit ?? "-"}</div>
-                  <div className="font-mono text-xl">{recommendation.entryPrice || "-"}</div>
-                </div>
-                <div className="bg-[hsl(var(--sell))/0.05] border border-[hsl(var(--sell))/0.2] p-4">
-                  <div className="text-sm font-bold uppercase tracking-widest text-[hsl(var(--sell))] mb-1 flex items-center gap-2">
-                    <ShieldAlert className="w-4 h-4" /> Stop Loss
-                  </div>
-                  <div className="font-mono text-xl text-[hsl(var(--sell))]">{recommendation.stopLoss || "-"}</div>
-                </div>
-                <div className="bg-[hsl(var(--buy))/0.05] border border-[hsl(var(--buy))/0.2] p-4">
-                  <div className="text-sm font-bold uppercase tracking-widest text-[hsl(var(--buy))] mb-1 flex items-center gap-2">
-                    <Crosshair className="w-4 h-4" /> Take Profit
-                  </div>
-                  <div className="font-mono text-xl text-[hsl(var(--buy))]">{recommendation.takeProfit || "-"}</div>
                 </div>
               </div>
 
@@ -192,18 +166,12 @@ export default function Dashboard() {
                     ${recommendation.direction === 'BUY' 
                       ? 'bg-green-500 hover:bg-green-400 text-black' 
                       : 'bg-red-500 hover:bg-red-400 text-white'}`}
-                      ? 'bg-green-500 hover:bg-green-400 text-black' 
-                      : 'bg-red-500 hover:bg-red-400 text-white'}`}
-                      ? 'bg-[hsl(var(--buy))] hover:bg-[hsl(var(--buy))/0.8] text-black' 
-                      : 'bg-[hsl(var(--sell))] hover:bg-[hsl(var(--sell))/0.8] text-white'}`}
                   onClick={() => {
                     setEntryPrice(recommendation.price.toString());
                     setShowMonitorForm(true);
                   }}
                   disabled={monitor?.isActive}
                 >
-                  I&apos;m Trading This
-                  I&apos;m Trading This
                   I'm Trading This
                 </Button>
               ) : (
@@ -247,8 +215,6 @@ export default function Dashboard() {
         )}
       </section>
 
-      {/* ACTIVE TRADE MONITOR */}
-      {/* ACTIVE TRADE MONITOR */}
       {/* 2. ACTIVE TRADE MONITOR */}
       {monitor?.isActive && (
         <section>
@@ -264,28 +230,16 @@ export default function Dashboard() {
           >
             {monitor.alertLevel === 'danger' && (
               <div className="absolute top-0 left-0 w-full bg-red-500 text-white text-center font-black uppercase tracking-widest py-1 text-sm">
-              ? 'border-[hsl(var(--sell))] bg-[hsl(var(--sell))/0.1] animate-pulse-fast' 
-              : monitor.alertLevel === 'warning'
-                ? 'border-yellow-500 bg-yellow-500/10'
-                : 'border-[hsl(var(--buy))] bg-[hsl(var(--buy))/0.05]'
-            }`}
-          >
-            {monitor.alertLevel === 'danger' && (
-              <div className="absolute top-0 left-0 w-full bg-[hsl(var(--sell))] text-white text-center font-black uppercase tracking-widest py-1 text-sm">
                 Action Required
               </div>
             )}
             
             <div className={`flex flex-col md:flex-row justify-between items-start md:items-center gap-6 ${monitor.alertLevel === 'danger' ? 'mt-6' : ''}`}>
-            <div className={`flex flex-col md:flex-row justify-between items-start md:items-center gap-6 ${monitor.alertLevel === 'danger' ? 'mt-6' : ''}`}>
-            <div className={`flex flex-col md:flex-row justify-between items-start md:items-center gap-6 ${monitor.alertLevel === 'danger' ? 'mt-4' : ''}`}>
               <div>
                 <div className="flex items-center gap-3 mb-2">
                   <span className="text-2xl font-black tracking-tight">{monitor.symbol}</span>
                   <span className={`px-2 py-0.5 text-xs font-bold uppercase tracking-widest border
                     ${monitor.direction === 'BUY' ? 'text-green-400 border-green-400/50' : 'text-red-400 border-red-400/50'}`}
-                    ${monitor.direction === 'BUY' ? 'text-green-400 border-green-400/50' : 'text-red-400 border-red-400/50'}`}
-                    ${monitor.direction === 'BUY' ? 'text-[hsl(var(--buy))] border-[hsl(var(--buy))/0.5]' : 'text-[hsl(var(--sell))] border-[hsl(var(--sell))/0.5]'}`}
                   >
                     {monitor.direction}
                   </span>
@@ -293,15 +247,10 @@ export default function Dashboard() {
                 
                 {monitor.alert ? (
                   <p className={`text-lg md:text-2xl font-black mt-2 max-w-xl
-                    ${monitor.alertLevel === 'danger' ? 'text-red-400' : 'text-yellow-400'}`}
-                    ${monitor.alertLevel === 'danger' ? 'text-red-400' : 'text-yellow-400'}`}
-                    ${monitor.alertLevel === 'danger' ? 'text-[hsl(var(--sell))]' : 'text-yellow-500'}`}
-                  >
+                    ${monitor.alertLevel === 'danger' ? 'text-red-400' : 'text-yellow-400'}`}>
                     {monitor.alert}
                   </p>
                 ) : (
-                  <p className="text-lg font-bold text-green-400 mt-2 flex items-center gap-2">
-                  <p className="text-lg font-bold text-green-400 mt-2 flex items-center gap-2">
                   <p className="text-lg font-bold text-[hsl(var(--buy))] mt-2 flex items-center gap-2">
                     <Activity className="w-5 h-5" /> Your trade is on track
                   </p>
@@ -313,8 +262,6 @@ export default function Dashboard() {
                   <div className="text-xs font-bold uppercase tracking-widest text-muted-foreground mb-1">P&L</div>
                   <div className={`font-mono text-2xl font-black
                     ${(monitor.pnlPercent || 0) >= 0 ? 'text-green-400' : 'text-red-400'}`}
-                    ${(monitor.pnlPercent || 0) >= 0 ? 'text-green-400' : 'text-red-400'}`}
-                    ${(monitor.pnlPercent || 0) >= 0 ? 'text-[hsl(var(--buy))]' : 'text-[hsl(var(--sell))]'}`}
                   >
                     {(monitor.pnlPercent || 0) >= 0 ? "+" : ""}{(monitor.pnlPercent || 0).toFixed(2)}%
                   </div>
@@ -345,8 +292,6 @@ export default function Dashboard() {
         </section>
       )}
 
-      {/* OTHER SIGNALS */}
-      {/* OTHER SIGNALS */}
       {/* 3. OTHER SIGNALS */}
       <section>
         <div className="flex items-center justify-between mb-4">
