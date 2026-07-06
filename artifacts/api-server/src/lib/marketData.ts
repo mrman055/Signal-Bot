@@ -65,6 +65,35 @@ async function fetchWithTimeout(url: string, timeoutMs = 10000): Promise<Respons
   }
 }
 
+
+const KRAKEN_BASE = "https://api.kraken.com/0/public";
+
+async function fetchKrakenCandles(symbol: string, interval = 1, limit = 100): Promise<OHLCVCandle[]> {
+  try {
+    const krakenPair = symbol === "BTC/USD" ? "XBTUSD" : "ETHUSD";
+    const url = `${KRAKEN_BASE}/OHLC?pair=${krakenPair}&interval=${interval}`;
+    const res = await fetchWithTimeout(url, 8000);
+    if (!res.ok) return [];
+    const data = await res.json() as { error: string[]; result: Record<string, number[][]> };
+    if (data.error && data.error.length > 0) return [];
+    const pairs = Object.values(data.result).filter(v => Array.isArray(v));
+    if (pairs.length === 0) return [];
+    const candles = pairs[0].slice(-limit).map((k: number[]) => ({
+      time: k[0],
+      open: parseFloat(String(k[1])),
+      high: parseFloat(String(k[2])),
+      low: parseFloat(String(k[3])),
+      close: parseFloat(String(k[4])),
+      volume: parseFloat(String(k[6])),
+    })).filter((c: OHLCVCandle) => !isNaN(c.open) && !isNaN(c.close));
+    return candles;
+  } catch {
+    return [];
+  }
+}
+
+const KRAKEN_PAIRS = new Set(["BTC/USD", "ETH/USD"]);
+
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
 function parseTwelveDataCandles(values: TwelveDataCandle[]): OHLCVCandle[] {
@@ -103,7 +132,18 @@ async function runFetchQueue(): Promise<void> {
       const pair = TRACKED_PAIRS.find((p) => p.symbol === symbol);
       if (!pair) continue;
 
-      const url = `${BASE_URL}/time_series?symbol=${encodeURIComponent(pair.twelveDataSymbol)}&interval=1min&outputsize=100&apikey=${API_KEY}`;
+      // Use Kraken for crypto pairs (1-minute candles, free, no auth)
+      if (KRAKEN_PAIRS.has(symbol)) {
+        const candles = await fetchKrakenCandles(symbol, 60, 100);
+        if (candles.length >= 20) {
+          candleCache.set(symbol, { candles, fetchedAt: Date.now(), isLive: true });
+          logger.info({ symbol }, "Live 1m candles loaded from Kraken");
+        } else if (!candleCache.has(symbol)) {
+          candleCache.set(symbol, { candles: generateFallbackCandles(symbol), fetchedAt: Date.now(), isLive: false });
+        }
+        continue;
+      }
+      const url = `${BASE_URL}/time_series?symbol=${encodeURIComponent(pair.twelveDataSymbol)}&interval=1h&outputsize=100&apikey=${API_KEY}`;
       const res = await fetchWithTimeout(url);
       const data = await res.json() as TwelveDataTimeSeriesResponse;
 
