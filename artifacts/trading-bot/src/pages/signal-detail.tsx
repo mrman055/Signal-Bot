@@ -156,7 +156,7 @@ export default function SignalDetail() {
       {/* Chart */}
       {signal.candles && signal.candles.length > 0 && (
         <div className="border border-border bg-card p-4">
-          <h2 className="text-sm font-bold uppercase tracking-widest text-muted-foreground mb-4">Price Chart (1M)</h2>
+          <h2 className="text-sm font-bold uppercase tracking-widest text-muted-foreground mb-4">Price Chart (1H)</h2>
           <CandlestickChart candles={signal.candles} />
         </div>
       )}

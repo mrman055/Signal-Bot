@@ -224,6 +224,7 @@ export async function computeSignalDetail(symbol: string): Promise<ComputedSigna
 }
 
 export async function getAllSignals(): Promise<ComputedSignal[]> {
+  const MIN_CONFIDENCE = 75;
   const results = await Promise.all(
     TRACKED_PAIRS.map(async (pair) => {
       const detail = await computeSignalDetail(pair.symbol);
@@ -232,7 +233,7 @@ export async function getAllSignals(): Promise<ComputedSignal[]> {
       return signal;
     })
   );
-  return results.filter((s): s is ComputedSignal => s !== null);
+  return results.filter((s): s is ComputedSignal => s !== null && (s.direction === "NEUTRAL" || s.strength >= MIN_CONFIDENCE));
 }
 
 export async function refreshSignal(symbol: string): Promise<ComputedSignalDetail | null> {
